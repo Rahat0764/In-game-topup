@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Gaming Store | Premium Top-Up</title>
+    <title>HarbingerX Game Store | Premium Top-Up</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,7 +11,7 @@
     <div class="background-overlay"></div>
     
     <header>
-        <h1 class="logo">NEXUS <span>STORE</span></h1>
+        <h1 class="logo">HARBINGER<span>X</span></h1>
         <p class="tagline">Next-Gen In-Game Purchases</p>
     </header>
 
@@ -66,7 +66,15 @@
 
                         <div class="payment-section">
                             <h3>Payment Instruction (bKash)</h3>
-                            <p>Send Money to: <strong class="highlight">01610359086</strong></p>
+                            <div class="number-copy">
+                                <span>Send Money to:</span>
+                                <div class="copy-container">
+                                    <strong id="bkash-number" class="highlight">01610359086</strong>
+                                    <button type="button" class="copy-icon" onclick="copyNumber()">
+                                        📋
+                                    </button>
+                                </div>
+                            </div>
                             <p>Payable Amount: <strong id="payment-amount" class="highlight">0৳</strong></p>
                             <div class="input-group" style="margin-top: 15px;">
                                 <input type="text" id="trxid" required placeholder=" ">
@@ -86,10 +94,12 @@
 
     <div id="success-modal" class="modal hidden">
         <div class="modal-wrapper">
-            <div class="modal-content glass-effect text-center">
-                <div class="success-icon">✓</div>
+            <div class="modal-content glass-effect text-center premium-popup">
+                <div class="success-icon-container">
+                    <div class="success-icon">✓</div>
+                </div>
                 <h2 class="glow-text">Order Submitted!</h2>
-                <p>অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ২৪ ঘণ্টার মধ্যে আপনার আইটেম পেয়ে যাবেন।</p>
+                <p>অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ২৪ ঘণ্টার মধ্যে আপনার আইটেম পেয়ে যাবেন।</p>
                 <button id="close-success" class="submit-btn mt-20">Close</button>
             </div>
         </div>
