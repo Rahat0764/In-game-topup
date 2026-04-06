@@ -19,98 +19,105 @@ body {
 }
 
 .background-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(255, 0, 60, 0.05) 0%, transparent 50%);
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
     z-index: -1;
 }
 
-header { text-align: center; padding: 40px 20px; }
-.logo { font-family: 'Orbitron', sans-serif; font-size: 3rem; text-shadow: 0 0 10px var(--primary); }
+header { text-align: center; padding: 30px 10px; }
+.logo { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-shadow: 0 0 10px var(--primary); }
 .logo span { color: var(--primary); }
-.tagline { color: var(--text-muted); font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; }
+.tagline { color: var(--text-muted); font-size: 1rem; letter-spacing: 1px; }
 
-.game-switcher {
-    display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;
-}
-
+.game-switcher { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; padding: 0 10px; }
 .game-btn {
     background: transparent; border: 1px solid var(--glass-border);
-    color: var(--text-muted); padding: 12px 30px; font-size: 1.2rem;
-    font-family: 'Orbitron', sans-serif; cursor: pointer;
-    border-radius: 4px; transition: all 0.3s ease; position: relative;
-    overflow: hidden;
+    color: var(--text-muted); padding: 10px 20px; font-size: 1rem;
+    font-family: 'Orbitron', sans-serif; cursor: pointer; border-radius: 4px;
 }
-
-.game-btn.active {
-    color: var(--text-main); border-color: var(--primary);
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); background: rgba(0, 240, 255, 0.1);
-}
+.game-btn.active { color: var(--text-main); border-color: var(--primary); background: rgba(0, 240, 255, 0.1); }
 
 .grid-container {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px; padding: 0 5%; max-width: 1400px; margin: 0 auto 50px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px; padding: 0 20px; max-width: 1200px; margin: 0 auto;
 }
 
 .package-card {
     background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px; padding: 25px; text-align: center;
-    backdrop-filter: blur(10px); cursor: pointer; transition: all 0.4s ease;
-    position: relative; overflow: hidden;
+    border-radius: 12px; padding: 20px; text-align: center; backdrop-filter: blur(10px);
 }
 
-.package-card::before {
-    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.1), transparent);
-    transform: rotate(45deg); transition: all 0.5s ease; opacity: 0;
+.package-card h3 { font-size: 1.4rem; margin: 10px 0; }
+.package-card p { font-family: 'Orbitron'; font-size: 1.5rem; color: #fff; }
+
+/* --- Modal Mobile Fix --- */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    z-index: 100; display: flex; justify-content: center; align-items: center;
+}
+.modal.hidden { display: none; }
+
+.modal-wrapper {
+    width: 95%; max-width: 500px; max-height: 90vh; display: flex;
 }
 
-.package-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 20px rgba(0,0,0,0.5), 0 0 15px rgba(0, 240, 255, 0.2); }
-.package-card:hover::before { opacity: 1; left: 100%; }
+.modal-content {
+    width: 100%; background: #0a0f1e; border: 1px solid var(--primary);
+    border-radius: 16px; position: relative; display: flex; flex-direction: column;
+}
 
-.pack-type { font-size: 0.9rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
-.pack-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; }
-.pack-price { font-size: 1.8rem; font-family: 'Orbitron', sans-serif; color: #fff; }
-.pack-price span { font-size: 1rem; color: var(--text-muted); }
+.scroll-content {
+    padding: 30px; overflow-y: auto; max-height: 100%;
+}
 
-/* Modal Styles */
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 1; transition: opacity 0.3s ease; }
-.modal.hidden { opacity: 0; pointer-events: none; }
-.glass-effect { background: rgba(10, 15, 30, 0.85); border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(0, 240, 255, 0.15); border-radius: 16px; width: 90%; max-width: 500px; padding: 40px; position: relative; transform: translateY(0); transition: transform 0.3s ease; }
-.modal.hidden .glass-effect { transform: translateY(50px); }
+.close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.8rem; cursor: pointer; z-index: 10; color: var(--text-muted); }
 
-.close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: var(--text-muted); transition: 0.3s; }
-.close-btn:hover { color: var(--secondary); }
+/* --- Input Groups --- */
+.input-group { position: relative; margin-bottom: 20px; }
+.input-group input {
+    width: 100%; padding: 12px; background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 6px; outline: none;
+}
+.input-group label {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); transition: 0.3s; pointer-events: none;
+}
+.input-group input:focus ~ label, .input-group input:not(:placeholder-shown) ~ label {
+    top: -8px; left: 8px; font-size: 0.8rem; color: var(--primary); background: #0a0f1e; padding: 0 4px;
+}
 
-.glow-text { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 5px; }
-.game-tag { color: var(--text-muted); margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+/* --- Qty Control (+/-) --- */
+.price-calculator {
+    background: rgba(0, 240, 255, 0.05); padding: 15px; border-radius: 8px;
+    margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; align-items: center;
+}
+.qty-control { display: flex; align-items: center; gap: 5px; }
+.qty-btn {
+    width: 40px; height: 40px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary);
+    color: var(--primary); font-size: 1.5rem; border-radius: 4px; cursor: pointer; transition: 0.2s;
+}
+.qty-btn:hover { background: var(--primary); color: #000; }
+#quantity {
+    width: 60px; height: 40px; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; text-align: center; font-size: 1.2rem; border-radius: 4px; outline: none;
+}
+.total-price { font-size: 1.4rem; font-family: 'Orbitron'; color: var(--primary); margin-top: 5px; }
 
-/* Form Elements */
-.input-group { position: relative; margin-bottom: 25px; width: 100%; }
-.row { display: flex; gap: 15px; }
-.input-group input { width: 100%; padding: 12px 15px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 1.1rem; font-family: 'Rajdhani', sans-serif; border-radius: 6px; outline: none; transition: 0.3s; }
-.input-group label { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; transition: 0.3s; font-size: 1.1rem; }
-.input-group input:focus, .input-group input:not(:placeholder-shown) { border-color: var(--primary); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
-.input-group input:focus ~ label, .input-group input:not(:placeholder-shown) ~ label { top: -10px; left: 10px; font-size: 0.9rem; background: var(--bg-color); padding: 0 5px; color: var(--primary); }
+.payment-section { background: rgba(255, 204, 0, 0.05); border-left: 3px solid #ffcc00; padding: 15px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9rem; }
+.highlight { color: #ffcc00; }
 
-.price-calculator { display: flex; justify-content: space-between; align-items: center; background: rgba(0, 240, 255, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 25px; }
-.qty-group input { width: 60px; padding: 5px; background: transparent; border: 1px solid var(--primary); color: #fff; text-align: center; font-size: 1.2rem; border-radius: 4px; margin-left: 10px; outline: none; }
-.total-price { font-size: 1.5rem; font-family: 'Orbitron', sans-serif; font-weight: bold; color: var(--primary); }
-
-.payment-section { background: rgba(255, 204, 0, 0.05); border-left: 3px solid #ffcc00; padding: 15px; border-radius: 4px; margin-bottom: 25px; }
-.payment-section h3 { color: #ffcc00; margin-bottom: 10px; font-size: 1.2rem; }
-.highlight { color: #ffcc00; font-size: 1.2rem; letter-spacing: 1px; }
-
-.submit-btn { width: 100%; padding: 15px; background: linear-gradient(90deg, #00f0ff, #0080ff); border: none; color: #fff; font-size: 1.3rem; font-family: 'Orbitron', sans-serif; font-weight: bold; cursor: pointer; border-radius: 6px; text-transform: uppercase; transition: 0.3s; position: relative; overflow: hidden; }
-.submit-btn:hover { box-shadow: 0 0 20px rgba(0, 240, 255, 0.6); transform: scale(1.02); }
+.submit-btn {
+    width: 100%; padding: 15px; background: var(--primary); border: none;
+    color: #000; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 6px;
+}
 .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
-.loader { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.success-icon { font-size: 4rem; color: #00ff88; text-shadow: 0 0 20px rgba(0,255,136,0.5); margin-bottom: 15px; }
+.success-icon { font-size: 3rem; color: #0f0; margin-bottom: 10px; }
 .text-center { text-align: center; }
-.mt-20 { margin-top: 20px; }
 
-@media (max-width: 600px) { .row { flex-direction: column; gap: 0; } .glass-effect { padding: 25px; } }
+@media (max-width: 480px) {
+    .logo { font-size: 1.8rem; }
+    .scroll-content { padding: 20px; }
+    .row { display: flex; flex-direction: column; }
+}
