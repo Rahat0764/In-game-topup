@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HarbingerX Game Store | Premium Top-Up</title>
+    <title>Nexus Gaming Store | Premium Top-Up</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -25,65 +25,73 @@
     </main>
 
     <div id="order-modal" class="modal hidden">
-        <div class="modal-content glass-effect">
-            <span class="close-btn">&times;</span>
-            <h2 id="modal-package-name" class="glow-text">Package Name</h2>
-            <p id="modal-game-name" class="game-tag">Game Name</p>
-            
-            <form id="order-form">
-                <div class="input-group">
-                    <input type="text" id="email-username" required placeholder=" ">
-                    <label>Email/Username</label>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="password" required placeholder=" ">
-                    <label>Password</label>
-                </div>
-                <div class="row">
-                    <div class="input-group">
-                        <input type="text" id="server" required placeholder=" ">
-                        <label>Server</label>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="ign" required placeholder=" ">
-                        <label>In-game Name</label>
-                    </div>
-                </div>
-                
-                <div class="price-calculator">
-                    <div class="qty-group">
-                        <label>Quantity:</label>
-                        <input type="number" id="quantity" value="1" min="1" max="10">
-                    </div>
-                    <div class="total-price">
-                        Total: <span id="display-price">0</span>৳
-                    </div>
-                </div>
+        <div class="modal-wrapper">
+            <div class="modal-content glass-effect">
+                <span class="close-btn">&times;</span>
+                <div class="scroll-content">
+                    <h2 id="modal-package-name" class="glow-text">Package Name</h2>
+                    <p id="modal-game-name" class="game-tag">Game Name</p>
+                    
+                    <form id="order-form">
+                        <div class="input-group">
+                            <input type="text" id="email-username" required placeholder=" ">
+                            <label>Email/Username</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="password" required placeholder=" ">
+                            <label>Password</label>
+                        </div>
+                        <div class="row">
+                            <div class="input-group">
+                                <input type="text" id="server" required placeholder=" ">
+                                <label>Server</label>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" id="ign" required placeholder=" ">
+                                <label>In-game Name</label>
+                            </div>
+                        </div>
+                        
+                        <div class="price-calculator">
+                            <label>Quantity:</label>
+                            <div class="qty-control">
+                                <button type="button" class="qty-btn" id="minus-btn">−</button>
+                                <input type="number" id="quantity" value="1" min="1">
+                                <button type="button" class="qty-btn" id="plus-btn">+</button>
+                            </div>
+                            <div class="total-price">
+                                Total: <span id="display-price">0</span>৳
+                            </div>
+                        </div>
 
-                <div class="payment-section">
-                    <h3>Payment Instruction (bKash)</h3>
-                    <p>Please Send Money to: <strong class="highlight">01610359086</strong></p>
-                    <p>Amount: <strong id="payment-amount" class="highlight">0৳</strong></p>
-                    <div class="input-group" style="margin-top: 15px;">
-                        <input type="text" id="trxid" required placeholder=" ">
-                        <label>bKash TrxID</label>
-                    </div>
-                </div>
+                        <div class="payment-section">
+                            <h3>Payment Instruction (bKash)</h3>
+                            <p>Send Money to: <strong class="highlight">01610359086</strong></p>
+                            <p>Payable Amount: <strong id="payment-amount" class="highlight">0৳</strong></p>
+                            <div class="input-group" style="margin-top: 15px;">
+                                <input type="text" id="trxid" required placeholder=" ">
+                                <label>bKash TrxID</label>
+                            </div>
+                        </div>
 
-                <button type="submit" class="submit-btn" id="submit-btn">
-                    <span class="btn-text">Confirm Order</span>
-                    <span class="loader hidden"></span>
-                </button>
-            </form>
+                        <button type="submit" class="submit-btn" id="submit-btn">
+                            <span class="btn-text">Confirm Order</span>
+                            <span class="loader hidden"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="success-modal" class="modal hidden">
-        <div class="modal-content glass-effect text-center">
-            <div class="success-icon">✓</div>
-            <h2 class="glow-text">Order Submitted!</h2>
-            <p>আপনার অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। আপনি ২৪ ঘণ্টার মধ্যে আপনার আইটেম পেয়ে যাবেন।</p>
-            <button id="close-success" class="submit-btn mt-20">Close</button>
+        <div class="modal-wrapper">
+            <div class="modal-content glass-effect text-center">
+                <div class="success-icon">✓</div>
+                <h2 class="glow-text">Order Submitted!</h2>
+                <p>অর্ডারটি সফলভাবে গ্রহণ করা হয়েছে। ২৪ ঘণ্টার মধ্যে আপনার আইটেম পেয়ে যাবেন।</p>
+                <button id="close-success" class="submit-btn mt-20">Close</button>
+            </div>
         </div>
     </div>
 
