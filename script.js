@@ -23,9 +23,8 @@ const packages = {
     ]
 };
 
-// Bot Configuration
 const BOT_TOKEN = '8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag';
-const CHAT_IDS = ['8395284772']; // Add more IDs separated by comma
+const CHAT_IDS = ['8395284772']; 
 
 const container = document.getElementById('packages-container');
 const modal = document.getElementById('order-modal');
@@ -34,17 +33,25 @@ const plusBtn = document.getElementById('plus-btn');
 const minusBtn = document.getElementById('minus-btn');
 const displayPrice = document.getElementById('display-price');
 const paymentAmount = document.getElementById('payment-amount');
+const body = document.body;
 
 let currentPackage = null;
 let currentGame = '';
 
 function render(game) {
+    // UI Change & Theme Swap
+    body.className = `theme-${game}`;
     container.innerHTML = '';
     currentGame = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
-    packages[game].forEach(p => {
+    
+    // Staggered Animation Logic
+    packages[game].forEach((p, index) => {
         const div = document.createElement('div');
         div.className = 'package-card';
-        div.innerHTML = `<small style="color:var(--primary)">${p.type}</small><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p>`;
+        div.style.animation = `slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.08}s forwards`; // Cascade effect
+        
+        div.innerHTML = `<span class="pack-type">${p.type}</span><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p>`;
+        
         div.onclick = () => {
             currentPackage = p;
             document.getElementById('modal-package-name').innerText = p.name;
@@ -82,7 +89,6 @@ document.getElementById('order-form').onsubmit = async (e) => {
     const btn = document.getElementById('submit-btn');
     btn.disabled = true; btn.innerText = 'Processing...';
 
-    // Telegram Markdown Message
     const msg = `🚀 *New Order!*
 
 🎮 *Game:* ${currentGame}
@@ -119,21 +125,15 @@ document.getElementById('order-form').onsubmit = async (e) => {
 
 document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
 
-// Copy bKash number to clipboard
 function copyNumber() {
     const numberText = document.getElementById('bkash-number').innerText;
     navigator.clipboard.writeText(numberText).then(() => {
-        // Simple visual feedback instead of an annoying alert
         const copyBtn = document.querySelector('.copy-icon');
         const originalIcon = copyBtn.innerText;
-        copyBtn.innerText = '✅';
-        setTimeout(() => {
-            copyBtn.innerText = originalIcon;
-        }, 2000);
-    }).catch(err => {
-        console.error('Failed to copy text: ', err);
-    });
+        copyBtn.innerText = '✔️';
+        setTimeout(() => { copyBtn.innerText = originalIcon; }, 2000);
+    }).catch(err => console.error('Failed to copy: ', err));
 }
 
-// Initial render
+// Start with WW Theme
 render('ww');
