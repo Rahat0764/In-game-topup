@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HarbingerX Game Store | Premium Top-Up</title>
+    <title>HarbingerX | Elite Top-Up</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
-<body class="theme-ww">
-    <div class="bg-layer bg-ww"></div>
-    <div class="bg-layer bg-wwm"></div>
-    <div class="particles"></div>
+<body>
+    <div class="elegant-bg"></div>
     
     <header>
-        <h1 class="logo">HARBINGER<span class="accent-text">X</span></h1>
-        <p class="tagline">Next-Gen In-Game Purchases</p>
+        <h1 class="logo">Harbinger<span>X</span></h1>
+        <p class="tagline">The Elite In-Game Experience</p>
     </header>
 
     <main>
@@ -29,62 +27,86 @@
     <div id="order-modal" class="modal hidden">
         <div class="modal-wrapper">
             <div class="modal-content glass-effect">
-                <span class="close-btn">&times;</span>
+                <div class="modal-header">
+                    <div>
+                        <h2 id="modal-package-name">Package Name</h2>
+                        <p id="modal-game-name" class="game-tag">Game Name</p>
+                    </div>
+                    <button class="close-btn">&times;</button>
+                </div>
+                
                 <div class="scroll-content">
-                    <h2 id="modal-package-name" class="glow-text">Package Name</h2>
-                    <p id="modal-game-name" class="game-tag">Game Name</p>
-                    
                     <form id="order-form">
-                        <div class="input-group">
-                            <input type="text" id="email-username" required placeholder=" ">
-                            <label>Email/Username</label>
-                        </div>
-                        <div class="input-group">
-                            <input type="password" id="password" required placeholder=" ">
-                            <label>Password</label>
-                        </div>
-                        <div class="row">
+                        <div class="form-section">
+                            <h3 class="section-title">Account Details</h3>
                             <div class="input-group">
-                                <input type="text" id="server" required placeholder=" ">
-                                <label>Server</label>
+                                <input type="text" id="email-username" required placeholder=" ">
+                                <label>Email / Username</label>
                             </div>
                             <div class="input-group">
-                                <input type="text" id="ign" required placeholder=" ">
-                                <label>In-game Name</label>
+                                <input type="password" id="password" required placeholder=" ">
+                                <label>Password</label>
+                            </div>
+                            <div class="row">
+                                <div class="input-group">
+                                    <input type="text" id="ign" required placeholder=" ">
+                                    <label>In-game Name</label>
+                                </div>
+                                <div class="input-group" id="server-group">
+                                    <div class="custom-select-wrapper" onclick="toggleSelect()">
+                                        <div class="custom-select">
+                                            <span id="selected-server-text">Select Server</span>
+                                            <span class="arrow">▼</span>
+                                        </div>
+                                        <div class="custom-options hidden" id="server-options">
+                                            <div onclick="selectServer('America')">America</div>
+                                            <div onclick="selectServer('Europe')">Europe</div>
+                                            <div onclick="selectServer('Asia')">Asia</div>
+                                            <div onclick="selectServer('HMT')">HMT</div>
+                                            <div onclick="selectServer('SEA')">SEA</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="server" required>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="price-calculator">
-                            <label>Quantity:</label>
-                            <div class="qty-control">
-                                <button type="button" class="qty-btn" id="minus-btn">−</button>
-                                <input type="number" id="quantity" value="1" min="1">
-                                <button type="button" class="qty-btn" id="plus-btn">+</button>
+                        <div class="form-section receipt-card">
+                            <div class="qty-row">
+                                <span>Quantity</span>
+                                <div class="qty-control">
+                                    <button type="button" class="qty-btn" id="minus-btn">−</button>
+                                    <input type="number" id="quantity" value="1" min="1" readonly>
+                                    <button type="button" class="qty-btn" id="plus-btn">+</button>
+                                </div>
                             </div>
-                            <div class="total-price">
-                                Total: <span id="display-price">0</span> BDT
+                            <div class="divider"></div>
+                            <div class="total-row">
+                                <span>Total Amount</span>
+                                <strong class="total-price"><span id="display-price">0</span> BDT</strong>
                             </div>
                         </div>
 
-                        <div class="payment-section">
-                            <h3>Payment Instruction (bKash)</h3>
+                        <div class="form-section bkash-section">
+                            <div class="bkash-header">
+                                <span>Payment Instruction</span>
+                                <span class="bkash-badge">bKash</span>
+                            </div>
                             <div class="number-copy">
-                                <span>Send Money to:</span>
-                                <div class="copy-container">
-                                    <strong id="bkash-number" class="highlight">01610359086</strong>
-                                    <button type="button" class="copy-icon" onclick="copyNumber()" title="Copy Number">📋</button>
+                                <span>Send money to:</span>
+                                <div class="copy-box" onclick="copyNumber()">
+                                    <strong id="bkash-number">01610359086</strong>
+                                    <span class="copy-icon" id="copy-icon">📋</span>
                                 </div>
                             </div>
-                            <p>Payable Amount: <strong id="payment-amount" class="highlight">0 BDT</strong></p>
-                            <div class="input-group" style="margin-top: 15px;">
+                            <div class="input-group" style="margin-top: 15px; margin-bottom: 0;">
                                 <input type="text" id="trxid" required placeholder=" ">
-                                <label>bKash TrxID</label>
+                                <label>Enter bKash TrxID</label>
                             </div>
                         </div>
 
                         <button type="submit" class="submit-btn" id="submit-btn">
-                            <span class="btn-text">Confirm Order</span>
-                            <span class="loader hidden"></span>
+                            <span class="btn-text">Confirm Purchase</span>
                         </button>
                     </form>
                 </div>
@@ -94,13 +116,16 @@
 
     <div id="success-modal" class="modal hidden">
         <div class="modal-wrapper">
-            <div class="modal-content glass-effect text-center premium-popup">
-                <div class="success-icon-container">
-                    <div class="success-icon">✓</div>
+            <div class="modal-content text-center success-box">
+                <div class="success-anim">
+                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                    </svg>
                 </div>
-                <h2 class="glow-text">Registration Successful!</h2>
-                <p>Your order has been successfully placed. Your items will be delivered within 24 hours.</p>
-                <button id="close-success" class="submit-btn mt-20">Got it</button>
+                <h2>Payment Verified</h2>
+                <p>Your order is being processed. The items will be credited to your account shortly.</p>
+                <button id="close-success" class="submit-btn mt-20">Continue</button>
             </div>
         </div>
     </div>
