@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HarbingerX Game Store | Premium Top-Up</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="background-overlay"></div>
+<body class="theme-ww">
+    <div class="dynamic-bg"></div>
     
     <header>
-        <h1 class="logo">HARBINGER<span>X</span></h1>
+        <div class="logo-container">
+            <h1 class="logo">HARBINGER<span>X</span></h1>
+        </div>
         <p class="tagline">Next-Gen In-Game Purchases</p>
     </header>
 
@@ -36,49 +38,65 @@
                         <div class="input-group">
                             <input type="text" id="email-username" required placeholder=" ">
                             <label>Email/Username</label>
+                            <div class="input-line"></div>
                         </div>
                         <div class="input-group">
                             <input type="password" id="password" required placeholder=" ">
                             <label>Password</label>
+                            <div class="input-line"></div>
                         </div>
                         <div class="row">
                             <div class="input-group">
                                 <input type="text" id="server" required placeholder=" ">
                                 <label>Server</label>
+                                <div class="input-line"></div>
                             </div>
                             <div class="input-group">
                                 <input type="text" id="ign" required placeholder=" ">
                                 <label>In-game Name</label>
+                                <div class="input-line"></div>
                             </div>
                         </div>
                         
                         <div class="price-calculator">
-                            <label>Quantity:</label>
-                            <div class="qty-control">
-                                <button type="button" class="qty-btn" id="minus-btn">−</button>
-                                <input type="number" id="quantity" value="1" min="1">
-                                <button type="button" class="qty-btn" id="plus-btn">+</button>
+                            <div class="qty-section">
+                                <label>Quantity</label>
+                                <div class="qty-control">
+                                    <button type="button" class="qty-btn" id="minus-btn">−</button>
+                                    <input type="number" id="quantity" value="1" min="1">
+                                    <button type="button" class="qty-btn" id="plus-btn">+</button>
+                                </div>
                             </div>
-                            <div class="total-price">
-                                Total: <span id="display-price">0</span> BDT
+                            <div class="total-section">
+                                <span class="total-label">Total Amount</span>
+                                <div class="total-price"><span id="display-price">0</span> BDT</div>
                             </div>
                         </div>
 
                         <div class="payment-section">
-                            <h3>Payment Instruction (bKash)</h3>
-                            <div class="number-copy">
-                                <span>Send Money to:</span>
-                                <div class="copy-container">
-                                    <strong id="bkash-number" class="highlight">01610359086</strong>
-                                    <button type="button" class="copy-icon" onclick="copyNumber()" title="Copy Number">
-                                        📋
-                                    </button>
+                            <div class="payment-header">
+                                <span class="bkash-icon">bKash</span>
+                                <h3>Payment Instruction</h3>
+                            </div>
+                            
+                            <div class="payment-details">
+                                <div class="detail-row">
+                                    <span>Send Money To:</span>
+                                    <div class="copy-box">
+                                        <strong id="bkash-number">01610359086</strong>
+                                        <button type="button" class="copy-icon" onclick="copyNumber()" title="Copy Number">📋</button>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Payable Amount:</span>
+                                    <strong id="payment-amount" class="highlight-amount">0 BDT</strong>
                                 </div>
                             </div>
-                            <p>Payable Amount: <strong id="payment-amount" class="highlight">0 BDT</strong></p>
-                            <div class="input-group" style="margin-top: 15px;">
+
+                            <div class="input-group mt-15">
                                 <input type="text" id="trxid" required placeholder=" ">
-                                <label>bKash TrxID</label>
+                                <label>Enter bKash TrxID</label>
+                                <div class="input-line"></div>
                             </div>
                         </div>
 
@@ -95,12 +113,12 @@
     <div id="success-modal" class="modal hidden">
         <div class="modal-wrapper">
             <div class="modal-content glass-effect text-center premium-popup">
-                <div class="success-icon-container">
+                <div class="success-ring">
                     <div class="success-icon">✓</div>
                 </div>
-                <h2 class="glow-text">Registration Successful!</h2>
-                <p>Your order has been successfully placed. Your items will be delivered within 24 hours.</p>
-                <button id="close-success" class="submit-btn mt-20">Got it</button>
+                <h2 class="glow-text">Order Confirmed!</h2>
+                <p>Your items have been queued for delivery. They will arrive in your account within 24 hours.</p>
+                <button id="close-success" class="submit-btn mt-20">Awesome</button>
             </div>
         </div>
     </div>
