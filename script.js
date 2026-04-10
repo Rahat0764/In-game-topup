@@ -140,7 +140,7 @@ document.getElementById('order-form').onsubmit = async (e) => {
     const gameStr = currentGame === 'ww' ? 'Wuthering Waves' : 'Where Winds Meet';
     const srvLine = currentGame === 'ww' ? `\n🌍 *Server:* \`${serverInput.value}\`` : '';
 
-    const msg = `🚀 *Premium Order!*
+    const msg = `🚀 *New Order!*
 
 🎮 *Game:* ${gameStr}
 📦 *Pack:* ${currentPackage.name}
