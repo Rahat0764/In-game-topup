@@ -1,6 +1,6 @@
 const packages = {
     ww: [
-        { id: 'ww1', type: 'Lunite Subscription Pack', name: 'Tide Blessing Pack', price: 449 },
+        { id: 'ww1', type: 'Monthly Subscription', name: 'Lunite Subscription Pack', price: 449 },
         { id: 'ww2', type: 'Resonator Pass Packs', name: 'Resonator Pass', price: 949 },
         { id: 'ww3', type: 'Resonator Pass Packs', name: 'Resonator Pass+', price: 2199 },
         { id: 'ww4', type: 'Lunite Top-Up', name: '120 Lunites', price: 109 },
