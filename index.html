@@ -1,195 +1,152 @@
-import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Moon, Sun, Plus, Minus, X, Facebook, Linkedin, Phone, CheckCircle2, ChevronDown, Package, Copy, Check, Gamepad2, Info } from 'lucide-react';
-
-const gamesData = {
-  nte: {
-    id: 'nte',
-    name: 'Neverness to Everness',
-    categories: [
-      {
-        name: 'Monthly Subscription',
-        items: [{ id: 'nte1', name: 'Riftcrystal Mining Permit', price: 450 }]
-      },
-      {
-        name: 'Battle Pass Packs',
-        items: [
-          { id: 'nte2', name: 'Elite Hunter Supplies', price: 950 },
-          { id: 'nte3', name: 'Honor Hunter Supplies', price: 2400 }
-        ]
-      },
-      {
-        name: 'Top-Up Packs',
-        items: [
-          { id: 'nte4', name: '120 Riftcrystal', price: 120 },
-          { id: 'nte5', name: '600 Riftcrystal', price: 600 },
-          { id: 'nte6', name: '1960 Riftcrystal', price: 1800 },
-          { id: 'nte7', name: '3960 Riftcrystal', price: 3600 },
-          { id: 'nte8', name: '6560 Riftcrystal', price: 6000 },
-          { id: 'nte9', name: '12960 Riftcrystal', price: 12000 }
-        ]
-      },
-      {
-        name: 'Gift Packs',
-        items: [
-          { id: 'nte10', name: 'Dual Band Dice Pack', price: 120 },
-          { id: 'nte11', name: 'Limited Press Arc Pack', price: 360 },
-          { id: 'nte12', name: 'Diversified Assets Pack', price: 600 },
-          { id: 'nte13', name: 'Rolling Tiger Dice Pack', price: 1800 },
-          { id: 'nte14', name: 'Supersonic Pack', price: 3120 }
-        ]
-      },
-      {
-        name: 'Outfits',
-        items: [
-          { id: 'nte15', name: 'The Popular Kid (Nanally)', price: 1920 },
-          { id: 'nte16', name: 'Verdant Grace (Chiz)', price: 1920 }
-        ]
-      }
-    ]
-  },
-  ww: {
-    id: 'ww',
-    name: 'Wuthering Waves',
-    categories: [
-      {
-        name: 'Monthly Subscription',
-        items: [{ id: 'ww1', name: 'Lunite Subscription Pack', price: 449 }]
-      },
-      {
-        name: 'Battle Pass Packs',
-        items: [
-          { id: 'ww2', name: 'Resonator Pass', price: 949 },
-          { id: 'ww3', name: 'Resonator Pass+', price: 2199 }
-        ]
-      },
-      {
-        name: 'Top-Up Packs',
-        items: [
-          { id: 'ww4', name: '120 Lunites', price: 109 },
-          { id: 'ww5', name: '600 Lunites', price: 449 },
-          { id: 'ww6', name: '1960 Lunites', price: 1649 },
-          { id: 'ww7', name: '3960 Lunites', price: 3299 },
-          { id: 'ww8', name: '6560 Lunites', price: 5499 },
-          { id: 'ww9', name: '12960 Lunites', price: 10999 }
-        ]
-      }
-    ]
-  },
-  wwm: {
-    id: 'wwm',
-    name: 'Where Winds Meet',
-    categories: [
-      {
-        name: 'Monthly Subscription',
-        items: [{ id: 'wwm1', name: 'Spirit Subscription', price: 449 }]
-      },
-      {
-        name: 'Battle Pass Packs',
-        items: [
-          { id: 'wwm2', name: 'Battle Scroll', price: 949 },
-          { id: 'wwm3', name: 'Battle Scroll+', price: 2199 }
-        ]
-      },
-      {
-        name: 'Top-Up Packs',
-        items: [
-          { id: 'wwm4', name: '120 Spirit Jade', price: 109 },
-          { id: 'wwm5', name: '600 Spirit Jade', price: 449 },
-          { id: 'wwm6', name: '1960 Spirit Jade', price: 1649 },
-          { id: 'wwm7', name: '3960 Spirit Jade', price: 3299 },
-          { id: 'wwm8', name: '6560 Spirit Jade', price: 5499 },
-          { id: 'wwm9', name: '12960 Spirit Jade', price: 10999 }
-        ]
-      }
-    ]
-  }
-};
-
-const getEnv = (key) => {
-  try { return import.meta.env[key]; } catch (e) {}
-  try { return process.env[key]; } catch (e) {}
-  return '';
-};
-
-export default function App() {
-  const [darkMode, setDarkMode] = useState(true);
-  const [activeGame, setActiveGame] = useState('nte');
-  const [cart, setCart] = useState([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [openCategories, setOpenCategories] = useState({});
-  const [isCopied, setIsCopied] = useState(false);
-
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    server: 'America',
-    ign: '',
-    trxid: ''
-  });
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HarbingerX Top-Up</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: {} }
     }
-  }, [darkMode]);
+  </script>
+  
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  const toggleTheme = () => setDarkMode(!darkMode);
+  <style>
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1c] text-slate-900 dark:text-slate-50 font-sans transition-colors duration-300">
+  
+  <div id="root"></div>
 
-  const updateCart = (item, delta) => {
-    setCart(prev => {
-      const existing = prev.find(i => i.id === item.id);
-      if (existing) {
-        const newQty = existing.quantity + delta;
-        if (newQty <= 0) return prev.filter(i => i.id !== item.id);
-        return prev.map(i => i.id === item.id ? { ...i, quantity: newQty } : i);
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // --- টেলিগ্রাম বট ইনফরমেশন (আপনার দেওয়া ডাটা অনুযায়ী) ---
+    const BOT_TOKEN = "8579178443:AAHDl_DEr43_AdA30j9y79FMWTlTFUJlGag";
+    const CHAT_ID = "8395284772";
+
+    // --- আইকন কম্পোনেন্টসমূহ ---
+    const IconGamepad2 = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>;
+    const IconFacebook = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>;
+    const IconLinkedin = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>;
+    const IconPhone = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>;
+    const IconSun = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>;
+    const IconMoon = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>;
+    const IconShoppingCart = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>;
+    const IconChevronDown = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>;
+    const IconPlus = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+    const IconMinus = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+    const IconX = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+    const IconPackage = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16.5 9.4 7.5 4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>;
+    const IconCopy = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>;
+    const IconCheck = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+    const IconCheckCircle2 = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>;
+    const IconInfo = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>;
+
+    const gamesData = {
+      nte: {
+        id: 'nte',
+        name: 'Neverness to Everness',
+        categories: [
+          { name: 'Monthly Subscription', items: [{ id: 'nte1', name: 'Riftcrystal Mining Permit', price: 450 }] },
+          { name: 'Battle Pass Packs', items: [{ id: 'nte2', name: 'Elite Hunter Supplies', price: 950 }, { id: 'nte3', name: 'Honor Hunter Supplies', price: 2400 }] },
+          { name: 'Top-Up Packs', items: [{ id: 'nte4', name: '120 Riftcrystal', price: 120 }, { id: 'nte5', name: '600 Riftcrystal', price: 600 }, { id: 'nte6', name: '1960 Riftcrystal', price: 1800 }, { id: 'nte7', name: '3960 Riftcrystal', price: 3600 }, { id: 'nte8', name: '6560 Riftcrystal', price: 6000 }, { id: 'nte9', name: '12960 Riftcrystal', price: 12000 }] },
+          { name: 'Gift Packs', items: [{ id: 'nte10', name: 'Dual Band Dice Pack', price: 120 }, { id: 'nte11', name: 'Limited Press Arc Pack', price: 360 }, { id: 'nte12', name: 'Diversified Assets Pack', price: 600 }, { id: 'nte13', name: 'Rolling Tiger Dice Pack', price: 1800 }, { id: 'nte14', name: 'Supersonic Pack', price: 3120 }] },
+          { name: 'Outfits', items: [{ id: 'nte15', name: 'The Popular Kid (Nanally)', price: 1920 }, { id: 'nte16', name: 'Verdant Grace (Chiz)', price: 1920 }] }
+        ]
+      },
+      ww: {
+        id: 'ww',
+        name: 'Wuthering Waves',
+        categories: [
+          { name: 'Monthly Subscription', items: [{ id: 'ww1', name: 'Lunite Subscription Pack', price: 449 }] },
+          { name: 'Battle Pass Packs', items: [{ id: 'ww2', name: 'Resonator Pass', price: 949 }, { id: 'ww3', name: 'Resonator Pass+', price: 2199 }] },
+          { name: 'Top-Up Packs', items: [{ id: 'ww4', name: '120 Lunites', price: 109 }, { id: 'ww5', name: '600 Lunites', price: 449 }, { id: 'ww6', name: '1960 Lunites', price: 1649 }, { id: 'ww7', name: '3960 Lunites', price: 3299 }, { id: 'ww8', name: '6560 Lunites', price: 5499 }, { id: 'ww9', name: '12960 Lunites', price: 10999 }] }
+        ]
+      },
+      wwm: {
+        id: 'wwm',
+        name: 'Where Winds Meet',
+        categories: [
+          { name: 'Monthly Subscription', items: [{ id: 'wwm1', name: 'Spirit Subscription', price: 449 }] },
+          { name: 'Battle Pass Packs', items: [{ id: 'wwm2', name: 'Battle Scroll', price: 949 }, { id: 'wwm3', name: 'Battle Scroll+', price: 2199 }] },
+          { name: 'Top-Up Packs', items: [{ id: 'wwm4', name: '120 Spirit Jade', price: 109 }, { id: 'wwm5', name: '600 Spirit Jade', price: 449 }, { id: 'wwm6', name: '1960 Spirit Jade', price: 1649 }, { id: 'wwm7', name: '3960 Spirit Jade', price: 3299 }, { id: 'wwm8', name: '6560 Spirit Jade', price: 5499 }, { id: 'wwm9', name: '12960 Spirit Jade', price: 10999 }] }
+        ]
       }
-      if (delta > 0) {
-        return [...prev, { ...item, quantity: 1, gameId: activeGame, gameName: gamesData[activeGame].name }];
-      }
-      return prev;
-    });
-  };
+    };
 
-  const toggleCategory = (gameId, catName) => {
-    setOpenCategories(prev => ({
-      ...prev,
-      [gameId]: {
-        ...(prev[gameId] || {}),
-        [catName]: !(prev[gameId]?.[catName])
-      }
-    }));
-  };
+    function App() {
+      const [darkMode, setDarkMode] = useState(true);
+      const [activeGame, setActiveGame] = useState('nte');
+      const [cart, setCart] = useState([]);
+      const [isCartOpen, setIsCartOpen] = useState(false);
+      const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+      const [isSuccessOpen, setIsSuccessOpen] = useState(false);
+      const [isLoading, setIsLoading] = useState(false);
+      const [openCategories, setOpenCategories] = useState({});
+      const [isCopied, setIsCopied] = useState(false);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText('01610359086');
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
+      const [formData, setFormData] = useState({ email: '', password: '', server: 'America', ign: '', trxid: '' });
 
-  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      useEffect(() => {
+        if (darkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }, [darkMode]);
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+      const toggleTheme = () => setDarkMode(!darkMode);
 
-  const handleCheckout = async (e) => {
-    e.preventDefault();
-    if (cart.length === 0) return;
-    setIsLoading(true);
+      const updateCart = (item, delta) => {
+        setCart(prev => {
+          const existing = prev.find(i => i.id === item.id);
+          if (existing) {
+            const newQty = existing.quantity + delta;
+            if (newQty <= 0) return prev.filter(i => i.id !== item.id);
+            return prev.map(i => i.id === item.id ? { ...i, quantity: newQty } : i);
+          }
+          if (delta > 0) {
+            return [...prev, { ...item, quantity: 1, gameId: activeGame, gameName: gamesData[activeGame].name }];
+          }
+          return prev;
+        });
+      };
 
-    const token = getEnv('VITE_BOT_TOKEN') || getEnv('REACT_APP_BOT_TOKEN') || getEnv('NEXT_PUBLIC_BOT_TOKEN');
-    const chatId = getEnv('VITE_CHAT_ID') || getEnv('REACT_APP_CHAT_ID') || getEnv('NEXT_PUBLIC_CHAT_ID');
+      const toggleCategory = (gameId, catName) => {
+        setOpenCategories(prev => ({
+          ...prev, [gameId]: { ...(prev[gameId] || {}), [catName]: !(prev[gameId]?.[catName]) }
+        }));
+      };
 
-    const gamesInCart = [...new Set(cart.map(i => i.gameName))].join(", ");
-    const packageDetails = cart.map(i => `${i.name} x${i.quantity}`).join(", ");
-    
-    const textMessage = `Game: ${gamesInCart}
+      const copyToClipboard = () => {
+        navigator.clipboard.writeText('01610359086');
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      };
+
+      const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+      const handleCheckout = async (e) => {
+        e.preventDefault();
+        if (cart.length === 0) return;
+        setIsLoading(true);
+
+        const gamesInCart = [...new Set(cart.map(i => i.gameName))].join(", ");
+        const packageDetails = cart.map(i => `${i.name} x${i.quantity}`).join(", ");
+        
+        const textMessage = `Game: ${gamesInCart}
 Email/Username: ${formData.email}
 Password: ${formData.password}
 Server: ${formData.server}
@@ -199,363 +156,356 @@ Quantity: ${cartItemsCount}
 Total Price: ${cartTotal}
 TrxID: ${formData.trxid}`;
 
-    if (token && chatId) {
-      try {
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: chatId, text: textMessage })
-        });
-      } catch (err) {}
-    } else {
-      console.log("Mock Checkout payload:", textMessage);
-    }
+        try {
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: CHAT_ID, text: textMessage })
+          });
+        } catch (err) {
+          console.error("Failed to send message", err);
+        }
 
-    setIsLoading(false);
-    setIsCheckoutOpen(false);
-    setCart([]);
-    setFormData({ ...formData, trxid: '' });
-    setIsSuccessOpen(true);
-  };
+        setIsLoading(false);
+        setIsCheckoutOpen(false);
+        setCart([]);
+        setFormData({ ...formData, trxid: '' });
+        setIsSuccessOpen(true);
+      };
 
-  return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0f1c] text-slate-900 dark:text-slate-50 font-sans transition-colors duration-300 pb-24">
-      <nav className="sticky top-0 z-40 backdrop-blur-xl bg-white/70 dark:bg-[#0a0f1c]/70 border-b border-slate-200 dark:border-slate-800/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <div className="bg-gradient-to-tr from-blue-600 to-indigo-500 p-1.5 rounded-lg text-white transform group-hover:rotate-12 transition-transform">
-              <Gamepad2 className="w-6 h-6" />
-            </div>
-            <span className="text-xl font-bold tracking-tight">Harbinger<span className="text-blue-600 dark:text-blue-400">X</span></span>
-          </div>
-          
-          <div className="flex items-center gap-2 sm:gap-4">
-            <div className="hidden sm:flex items-center gap-4 mr-2 text-slate-500 dark:text-slate-400">
-              <a href="https://facebook.com/HarbingerX" target="_blank" rel="noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><Facebook className="w-5 h-5" /></a>
-              <a href="https://linkedin.com/in/RahatAhmedX" target="_blank" rel="noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><Linkedin className="w-5 h-5" /></a>
-              <a href="https://wa.me/8801610359086" target="_blank" rel="noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><Phone className="w-5 h-5" /></a>
-            </div>
-            
-            <button onClick={toggleTheme} className="p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
-              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            
-            <button onClick={() => setIsCartOpen(true)} className="relative p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
-              <ShoppingCart className="w-5 h-5" />
-              {cartItemsCount > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white transform translate-x-1/4 -translate-y-1/4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full shadow-lg shadow-blue-500/50 border border-white dark:border-slate-900">
-                  {cartItemsCount}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold tracking-wide uppercase">
-            The Elite In-Game Experience
-          </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 dark:from-white dark:via-blue-200 dark:to-white">
-            Premium Top-Up Center
-          </h1>
-        </div>
-
-        <div className="flex overflow-x-auto hide-scrollbar gap-3 pb-4 mb-8 snap-x snap-mandatory rounded-2xl p-1 justify-start md:justify-center">
-          {Object.values(gamesData).map((game) => (
-            <button
-              key={game.id}
-              onClick={() => setActiveGame(game.id)}
-              className={`whitespace-nowrap px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 snap-center ${
-                activeGame === game.id 
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25 scale-100' 
-                : 'bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:bg-blue-50 dark:hover:bg-blue-900/10'
-              }`}
-            >
-              {game.name}
-            </button>
-          ))}
-        </div>
-
-        <div className="space-y-4">
-          {gamesData[activeGame].categories.map((category) => {
-            const isOpen = openCategories[activeGame]?.[category.name] ?? false;
-            
-            return (
-              <div key={category.name} className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none">
-                <button 
-                  onClick={() => toggleCategory(activeGame, category.name)}
-                  className="w-full px-6 py-5 flex items-center justify-between bg-transparent outline-none focus:outline-none group"
-                >
-                  <h2 className="text-xl font-bold flex items-center gap-3">
-                    <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600"></span>
-                    {category.name}
-                  </h2>
-                  <div className={`p-2 rounded-full transition-transform duration-300 ${isOpen ? 'bg-blue-100 dark:bg-blue-900/30 rotate-180' : 'bg-slate-100 dark:bg-slate-800 group-hover:bg-slate-200 dark:group-hover:bg-slate-700'}`}>
-                    <ChevronDown className={`w-5 h-5 ${isOpen ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500'}`} />
-                  </div>
+      return (
+        <div className="min-h-screen pb-24">
+          <nav className="sticky top-0 z-40 backdrop-blur-xl bg-white/70 dark:bg-[#0a0f1c]/70 border-b border-slate-200 dark:border-slate-800/50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+              <div className="flex items-center gap-2 group cursor-pointer">
+                <div className="bg-gradient-to-tr from-blue-600 to-indigo-500 p-1.5 rounded-lg text-white transform group-hover:rotate-12 transition-transform">
+                  <IconGamepad2 className="w-6 h-6" />
+                </div>
+                <span className="text-xl font-bold tracking-tight">Harbinger<span className="text-blue-600 dark:text-blue-400">X</span></span>
+              </div>
+              
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="hidden sm:flex items-center gap-4 mr-2 text-slate-500 dark:text-slate-400">
+                  <a href="https://facebook.com/HarbingerX" target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><IconFacebook className="w-5 h-5" /></a>
+                  <a href="https://linkedin.com/in/RahatAhmedX" target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><IconLinkedin className="w-5 h-5" /></a>
+                  <a href="https://wa.me/8801610359086" target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><IconPhone className="w-5 h-5" /></a>
+                </div>
+                
+                <button onClick={toggleTheme} className="p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                  {darkMode ? <IconSun className="w-5 h-5" /> : <IconMoon className="w-5 h-5" />}
                 </button>
                 
-                <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                  <div className="overflow-hidden">
-                    <div className="p-6 pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {category.items.map((item) => {
-                        const cartItem = cart.find(i => i.id === item.id);
-                        const qty = cartItem ? cartItem.quantity : 0;
-                        
-                        return (
-                          <div key={item.id} className="relative group bg-slate-50 dark:bg-[#162032] border border-slate-200 dark:border-slate-700/50 rounded-xl p-5 transition-all duration-300 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-900/10 flex flex-col justify-between h-full">
-                            <div className="mb-6">
-                              <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight">{item.name}</h3>
-                            </div>
-                            <div className="flex items-end justify-between mt-auto">
-                              <div>
-                                <p className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-                                  {item.price} <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">BDT</span>
-                                </p>
-                              </div>
-                              
-                              {qty > 0 ? (
-                                <div className="flex items-center gap-1 bg-white dark:bg-[#0a0f1c] rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
-                                  <button onClick={() => updateCart(item, -1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300"><Minus className="w-4 h-4" /></button>
-                                  <span className="font-bold w-6 text-center text-sm">{qty}</span>
-                                  <button onClick={() => updateCart(item, 1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300"><Plus className="w-4 h-4" /></button>
-                                </div>
-                              ) : (
-                                <button onClick={() => updateCart(item, 1)} className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/20 active:scale-95">
-                                  <Plus className="w-5 h-5" />
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
-
-      {cartItemsCount > 0 && !isCheckoutOpen && !isCartOpen && (
-        <div className="fixed bottom-0 left-0 right-0 z-30 p-4 bg-white/80 dark:bg-[#0a0f1c]/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800/80 animate-in slide-in-from-bottom-full duration-300">
-          <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total ({cartItemsCount} items)</span>
-              <span className="text-2xl font-black text-slate-900 dark:text-white">{cartTotal} BDT</span>
-            </div>
-            <button 
-              onClick={() => setIsCheckoutOpen(true)}
-              className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 active:scale-95 flex items-center gap-2"
-            >
-              Checkout <ShoppingCart className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {isCartOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onClick={() => setIsCartOpen(false)} />
-          <div className="relative w-full max-w-md bg-white dark:bg-[#0a0f1c] h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800/80">
-              <h2 className="text-2xl font-bold flex items-center gap-3">
-                <ShoppingCart className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                Shopping Cart
-              </h2>
-              <button onClick={() => setIsCartOpen(false)} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
-              {cart.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 space-y-4">
-                  <Package className="w-16 h-16 opacity-20" />
-                  <p className="text-lg">Your cart is empty.</p>
-                  <button onClick={() => setIsCartOpen(false)} className="px-6 py-2 bg-slate-100 dark:bg-slate-800 rounded-full font-medium hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Return to Store</button>
-                </div>
-              ) : (
-                cart.map(item => (
-                  <div key={item.id} className="flex flex-col p-4 bg-slate-50 dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800/80">
-                    <p className="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">{item.gameName}</p>
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-bold text-slate-900 dark:text-white truncate">{item.name}</h4>
-                        <p className="text-sm font-semibold text-slate-500">{item.price} BDT</p>
-                      </div>
-                      <div className="flex items-center gap-1 bg-white dark:bg-[#0a0f1c] rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
-                        <button onClick={() => updateCart(item, -1)} className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><Minus className="w-3 h-3" /></button>
-                        <span className="font-bold text-sm w-6 text-center">{item.quantity}</span>
-                        <button onClick={() => updateCart(item, 1)} className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><Plus className="w-3 h-3" /></button>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {cart.length > 0 && (
-              <div className="p-6 border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#0a0f1c]">
-                <div className="flex justify-between items-end mb-6">
-                  <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Amount</span>
-                  <span className="text-3xl font-black text-slate-900 dark:text-white">{cartTotal} BDT</span>
-                </div>
-                <button 
-                  onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
-                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-blue-600/30 flex justify-center items-center gap-2 active:scale-95"
-                >
-                  Checkout Items
+                <button onClick={() => setIsCartOpen(true)} className="relative p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                  <IconShoppingCart className="w-5 h-5" />
+                  {cartItemsCount > 0 && (
+                    <span className="absolute top-0 right-0 inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-bold text-white transform translate-x-1/4 -translate-y-1/4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full shadow-lg shadow-blue-500/50 border border-white dark:border-slate-900">
+                      {cartItemsCount}
+                    </span>
+                  )}
                 </button>
               </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {isCheckoutOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm" onClick={() => !isLoading && setIsCheckoutOpen(false)} />
-          <div className="relative w-full max-w-xl bg-white dark:bg-[#0a0f1c] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-full sm:max-h-[90vh] animate-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800/80">
-            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#111827]">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                Checkout Details
-              </h2>
-              <button onClick={() => setIsCheckoutOpen(false)} disabled={isLoading} className="p-2 rounded-full bg-white dark:bg-[#0a0f1c] border border-slate-200 dark:border-slate-800 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
-                <X className="w-5 h-5" />
-              </button>
             </div>
-            
-            <div className="p-6 overflow-y-auto flex-1 hide-scrollbar">
-              <form id="checkout-form" onSubmit={handleCheckout} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Email / Username</label>
-                    <input required type="text" name="email" value={formData.email} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all font-medium" />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Password</label>
-                    <input required type="password" name="password" value={formData.password} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all font-medium" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Server</label>
-                    <div className="relative">
-                      <select name="server" value={formData.server} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none appearance-none transition-all font-medium">
-                        <option>America</option>
-                        <option>Europe</option>
-                        <option>Asia</option>
-                        <option>HMT</option>
-                        <option>SEA</option>
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">In-game Name</label>
-                    <input required type="text" name="ign" value={formData.ign} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all font-medium" />
-                  </div>
-                </div>
+          </nav>
 
-                <div className="mt-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500/5 to-rose-500/5 border border-pink-500/20 p-6">
-                  <div className="absolute top-0 right-0 px-4 py-1.5 bg-[#e2136e] text-white text-xs font-bold rounded-bl-xl shadow-sm">bKash Payment</div>
-                  
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 mt-2">
-                    <div>
-                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Send exactly</p>
-                      <p className="text-3xl font-black text-[#e2136e]">{cartTotal} BDT</p>
-                    </div>
+          <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div className="text-center mb-10 duration-700">
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold tracking-wide uppercase">
+                The Elite In-Game Experience
+              </div>
+              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-blue-800 to-slate-900 dark:from-white dark:via-blue-200 dark:to-white">
+                Premium Top-Up Center
+              </h1>
+            </div>
+
+            <div className="flex overflow-x-auto hide-scrollbar gap-3 pb-4 mb-8 snap-x snap-mandatory rounded-2xl p-1 justify-start md:justify-center">
+              {Object.values(gamesData).map((game) => (
+                <button
+                  key={game.id}
+                  onClick={() => setActiveGame(game.id)}
+                  className={`whitespace-nowrap px-6 py-3.5 rounded-xl font-semibold transition-all duration-300 snap-center ${
+                    activeGame === game.id 
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25 scale-100' 
+                    : 'bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:bg-blue-50 dark:hover:bg-blue-900/10'
+                  }`}
+                >
+                  {game.name}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              {gamesData[activeGame].categories.map((category) => {
+                const isOpen = openCategories[activeGame]?.[category.name] ?? false;
+                
+                return (
+                  <div key={category.name} className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none">
+                    <button 
+                      onClick={() => toggleCategory(activeGame, category.name)}
+                      className="w-full px-6 py-5 flex items-center justify-between bg-transparent outline-none focus:outline-none group"
+                    >
+                      <h2 className="text-xl font-bold flex items-center gap-3">
+                        <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-blue-500 to-indigo-600"></span>
+                        {category.name}
+                      </h2>
+                      <div className={`p-2 rounded-full transition-transform duration-300 ${isOpen ? 'bg-blue-100 dark:bg-blue-900/30 rotate-180' : 'bg-slate-100 dark:bg-slate-800 group-hover:bg-slate-200 dark:group-hover:bg-slate-700'}`}>
+                        <IconChevronDown className={`w-5 h-5 ${isOpen ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500'}`} />
+                      </div>
+                    </button>
                     
-                    <div className="flex-1 max-w-[200px]">
-                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">To this number</p>
-                      <div 
-                        onClick={copyToClipboard}
-                        className="flex items-center justify-between gap-2 px-3 py-2 bg-white dark:bg-[#0a0f1c] rounded-lg border border-pink-500/30 cursor-pointer hover:border-[#e2136e] transition-colors group"
-                      >
-                        <code className="font-mono text-lg font-bold text-slate-800 dark:text-slate-100">01610359086</code>
-                        <div className="p-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:text-[#e2136e] transition-colors">
-                          {isCopied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                    <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                      <div className="overflow-hidden">
+                        <div className="p-6 pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {category.items.map((item) => {
+                            const cartItem = cart.find(i => i.id === item.id);
+                            const qty = cartItem ? cartItem.quantity : 0;
+                            
+                            return (
+                              <div key={item.id} className="relative group bg-slate-50 dark:bg-[#162032] border border-slate-200 dark:border-slate-700/50 rounded-xl p-5 transition-all duration-300 hover:border-blue-500/50 dark:hover:border-blue-500/50 flex flex-col justify-between h-full">
+                                <div className="mb-6">
+                                  <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight">{item.name}</h3>
+                                </div>
+                                <div className="flex items-end justify-between mt-auto">
+                                  <div>
+                                    <p className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+                                      {item.price} <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">BDT</span>
+                                    </p>
+                                  </div>
+                                  
+                                  {qty > 0 ? (
+                                    <div className="flex items-center gap-1 bg-white dark:bg-[#0a0f1c] rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
+                                      <button onClick={() => updateCart(item, -1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><IconMinus className="w-4 h-4" /></button>
+                                      <span className="font-bold w-6 text-center text-sm">{qty}</span>
+                                      <button onClick={() => updateCart(item, 1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><IconPlus className="w-4 h-4" /></button>
+                                    </div>
+                                  ) : (
+                                    <button onClick={() => updateCart(item, 1)} className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/20 active:scale-95">
+                                      <IconPlus className="w-5 h-5" />
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
                   </div>
+                );
+              })}
+            </div>
+          </main>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Enter bKash TrxID</label>
-                    <input required type="text" name="trxid" value={formData.trxid} onChange={handleInputChange} placeholder="e.g. 9XZ3Q... " className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-[#0a0f1c] border border-pink-500/30 focus:border-[#e2136e] focus:ring-2 focus:ring-[#e2136e]/20 outline-none transition-all font-mono font-medium uppercase placeholder:normal-case" />
-                  </div>
+          {cartItemsCount > 0 && !isCheckoutOpen && !isCartOpen && (
+            <div className="fixed bottom-0 left-0 right-0 z-30 p-4 bg-white/80 dark:bg-[#0a0f1c]/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800/80">
+              <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
+                <div className="flex flex-col">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total ({cartItemsCount} items)</span>
+                  <span className="text-2xl font-black text-slate-900 dark:text-white">{cartTotal} BDT</span>
                 </div>
-              </form>
+                <button 
+                  onClick={() => setIsCheckoutOpen(true)}
+                  className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-lg shadow-lg flex items-center gap-2"
+                >
+                  Checkout <IconShoppingCart className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-            
-            <div className="p-6 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#111827]">
-              <button 
-                form="checkout-form" 
-                type="submit" 
-                disabled={isLoading}
-                className="w-full py-4 bg-gradient-to-r from-[#e2136e] to-rose-600 hover:from-pink-600 hover:to-rose-700 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-xl font-bold text-lg transition-all shadow-lg shadow-pink-600/25 flex justify-center items-center gap-2 active:scale-95"
-              >
-                {isLoading ? <span className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></span> : `Confirm Payment - ${cartTotal} BDT`}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {isSuccessOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md" />
-          <div className="relative w-full max-w-sm bg-white dark:bg-[#111827] rounded-3xl p-8 shadow-2xl text-center animate-in zoom-in-90 duration-300 border border-slate-200 dark:border-slate-800">
-            <div className="mx-auto w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-500/30">
-              <CheckCircle2 className="w-12 h-12 text-white" />
-            </div>
-            <h2 className="text-2xl font-black mb-3">Order Received!</h2>
-            <p className="text-slate-600 dark:text-slate-400 mb-6 font-medium">Your info has been sent successfully. We are processing your order right now.</p>
-            
-            <div className="flex items-start gap-3 p-4 mb-8 bg-blue-50 dark:bg-blue-900/20 text-left rounded-xl border border-blue-100 dark:border-blue-800/50">
-              <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-              <p className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
-                If you face any issues or need an update, please contact the owner via WhatsApp or Facebook.
-              </p>
-            </div>
+          {isCartOpen && (
+            <div className="fixed inset-0 z-50 flex justify-end">
+              <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsCartOpen(false)} />
+              <div className="relative w-full max-w-md bg-white dark:bg-[#0a0f1c] h-full shadow-2xl flex flex-col">
+                <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800/80">
+                  <h2 className="text-2xl font-bold flex items-center gap-3">
+                    <IconShoppingCart className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    Shopping Cart
+                  </h2>
+                  <button onClick={() => setIsCartOpen(false)} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700">
+                    <IconX className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                  {cart.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-4">
+                      <IconPackage className="w-16 h-16 opacity-20" />
+                      <p className="text-lg">Your cart is empty.</p>
+                      <button onClick={() => setIsCartOpen(false)} className="px-6 py-2 bg-slate-100 dark:bg-slate-800 rounded-full font-medium">Return to Store</button>
+                    </div>
+                  ) : (
+                    cart.map(item => (
+                      <div key={item.id} className="flex flex-col p-4 bg-slate-50 dark:bg-[#111827] rounded-2xl border border-slate-200 dark:border-slate-800/80">
+                        <p className="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-1">{item.gameName}</p>
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-bold text-slate-900 dark:text-white truncate">{item.name}</h4>
+                            <p className="text-sm font-semibold text-slate-500">{item.price} BDT</p>
+                          </div>
+                          <div className="flex items-center gap-1 bg-white dark:bg-[#0a0f1c] rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
+                            <button onClick={() => updateCart(item, -1)} className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"><IconMinus className="w-3 h-3" /></button>
+                            <span className="font-bold text-sm w-6 text-center">{item.quantity}</span>
+                            <button onClick={() => updateCart(item, 1)} className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"><IconPlus className="w-3 h-3" /></button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
 
-            <button 
-              onClick={() => setIsSuccessOpen(false)}
-              className="w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold transition-transform hover:scale-[1.02] active:scale-[0.98] shadow-md"
-            >
-              Continue Shopping
-            </button>
-          </div>
-        </div>
-      )}
-
-      <footer className="border-t border-slate-200 dark:border-slate-800 mt-12 py-10 bg-white/30 dark:bg-[#0a0f1c]/30 backdrop-blur-sm">
-        <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <div className="bg-slate-200 dark:bg-slate-800 p-1.5 rounded text-slate-500">
-              <Gamepad2 className="w-5 h-5" />
+                {cart.length > 0 && (
+                  <div className="p-6 border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#0a0f1c]">
+                    <div className="flex justify-between items-end mb-6">
+                      <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Total Amount</span>
+                      <span className="text-3xl font-black text-slate-900 dark:text-white">{cartTotal} BDT</span>
+                    </div>
+                    <button 
+                      onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
+                      className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-lg flex justify-center items-center gap-2"
+                    >
+                      Checkout Items
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-            <span className="font-bold text-slate-500 tracking-wider">HarbingerX</span>
-          </div>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            <a href="https://facebook.com/HarbingerX" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white dark:hover:bg-slate-900">
-              <Facebook className="w-5 h-5" />
-              <span className="text-sm font-semibold">Facebook</span>
-            </a>
-            <a href="https://linkedin.com/in/RahatAhmedX" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white dark:hover:bg-slate-900">
-              <Linkedin className="w-5 h-5" />
-              <span className="text-sm font-semibold">LinkedIn</span>
-            </a>
-            <a href="https://wa.me/8801610359086" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white dark:hover:bg-slate-900">
-              <Phone className="w-5 h-5" />
-              <span className="text-sm font-semibold">WhatsApp</span>
-            </a>
-          </div>
+          )}
+
+          {isCheckoutOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+              <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-sm" onClick={() => !isLoading && setIsCheckoutOpen(false)} />
+              <div className="relative w-full max-w-xl bg-white dark:bg-[#0a0f1c] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-full sm:max-h-[90vh] border border-slate-200 dark:border-slate-800/80">
+                <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#111827]">
+                  <h2 className="text-xl font-bold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                    Checkout Details
+                  </h2>
+                  <button onClick={() => setIsCheckoutOpen(false)} disabled={isLoading} className="p-2 rounded-full bg-white dark:bg-[#0a0f1c] border border-slate-200 dark:border-slate-800 text-slate-400">
+                    <IconX className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                <div className="p-6 overflow-y-auto flex-1 hide-scrollbar">
+                  <form id="checkout-form" onSubmit={handleCheckout} className="space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="sm:col-span-2">
+                        <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Email / Username</label>
+                        <input required type="text" name="email" value={formData.email} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none font-medium" />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Password</label>
+                        <input required type="password" name="password" value={formData.password} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none font-medium" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Server</label>
+                        <div className="relative">
+                          <select name="server" value={formData.server} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none appearance-none font-medium">
+                            <option>America</option>
+                            <option>Europe</option>
+                            <option>Asia</option>
+                            <option>HMT</option>
+                            <option>SEA</option>
+                          </select>
+                          <IconChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">In-game Name</label>
+                        <input required type="text" name="ign" value={formData.ign} onChange={handleInputChange} className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-[#111827] border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none font-medium" />
+                      </div>
+                    </div>
+
+                    <div className="mt-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500/5 to-rose-500/5 border border-pink-500/20 p-6">
+                      <div className="absolute top-0 right-0 px-4 py-1.5 bg-[#e2136e] text-white text-xs font-bold rounded-bl-xl">bKash Payment</div>
+                      
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 mt-2">
+                        <div>
+                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Send exactly</p>
+                          <p className="text-3xl font-black text-[#e2136e]">{cartTotal} BDT</p>
+                        </div>
+                        
+                        <div className="flex-1 max-w-[200px]">
+                          <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">To this number</p>
+                          <div onClick={copyToClipboard} className="flex items-center justify-between gap-2 px-3 py-2 bg-white dark:bg-[#0a0f1c] rounded-lg border border-pink-500/30 cursor-pointer hover:border-[#e2136e] group">
+                            <code className="font-mono text-lg font-bold">01610359086</code>
+                            <div className="p-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:text-[#e2136e]">
+                              {isCopied ? <IconCheck className="w-4 h-4 text-green-500" /> : <IconCopy className="w-4 h-4" />}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-600 dark:text-slate-400 mb-2">Enter bKash TrxID</label>
+                        <input required type="text" name="trxid" value={formData.trxid} onChange={handleInputChange} placeholder="e.g. 9XZ3Q... " className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-[#0a0f1c] border border-pink-500/30 focus:border-[#e2136e] outline-none font-mono font-medium uppercase placeholder:normal-case" />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                
+                <div className="p-6 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#111827]">
+                  <button 
+                    form="checkout-form" type="submit" disabled={isLoading}
+                    className="w-full py-4 bg-gradient-to-r from-[#e2136e] to-rose-600 text-white rounded-xl font-bold text-lg shadow-lg flex justify-center items-center gap-2"
+                  >
+                    {isLoading ? <span className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin"></span> : `Confirm Payment - ${cartTotal} BDT`}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isSuccessOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md" />
+              <div className="relative w-full max-w-sm bg-white dark:bg-[#111827] rounded-3xl p-8 shadow-2xl text-center border border-slate-200 dark:border-slate-800">
+                <div className="mx-auto w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mb-6 shadow-lg shadow-green-500/30">
+                  <IconCheckCircle2 className="w-12 h-12 text-white" />
+                </div>
+                <h2 className="text-2xl font-black mb-3">Order Received!</h2>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 font-medium">Your info has been sent successfully. We are processing your order right now.</p>
+                
+                <div className="flex items-start gap-3 p-4 mb-8 bg-blue-50 dark:bg-blue-900/20 text-left rounded-xl border border-blue-100 dark:border-blue-800/50">
+                  <IconInfo className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+                    If you face any issues or need an update, please contact the owner via WhatsApp or Facebook.
+                  </p>
+                </div>
+
+                <button onClick={() => setIsSuccessOpen(false)} className="w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold shadow-md">
+                  Continue Shopping
+                </button>
+              </div>
+            </div>
+          )}
+
+          <footer className="border-t border-slate-200 dark:border-slate-800 mt-12 py-10 bg-white/30 dark:bg-[#0a0f1c]/30 backdrop-blur-sm">
+            <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-2">
+                <div className="bg-slate-200 dark:bg-slate-800 p-1.5 rounded text-slate-500">
+                  <IconGamepad2 className="w-5 h-5" />
+                </div>
+                <span className="font-bold text-slate-500 tracking-wider">HarbingerX</span>
+              </div>
+              <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+                <a href="https://facebook.com/HarbingerX" target="_blank" className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white dark:hover:bg-slate-900">
+                  <IconFacebook className="w-5 h-5" /> <span className="text-sm font-semibold">Facebook</span>
+                </a>
+                <a href="https://linkedin.com/in/RahatAhmedX" target="_blank" className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white dark:hover:bg-slate-900">
+                  <IconLinkedin className="w-5 h-5" /> <span className="text-sm font-semibold">LinkedIn</span>
+                </a>
+                <a href="https://wa.me/8801610359086" target="_blank" className="text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white dark:hover:bg-slate-900">
+                  <IconPhone className="w-5 h-5" /> <span className="text-sm font-semibold">WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </footer>
         </div>
-      </footer>
-    </div>
-  );
-}
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
