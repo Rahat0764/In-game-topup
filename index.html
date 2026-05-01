@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HarbingerX Top-Up</title>
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -12,7 +12,7 @@
       theme: { extend: {} }
     }
   </script>
-  
+
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -23,7 +23,7 @@
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1c] text-slate-900 dark:text-slate-50 font-sans transition-colors duration-300">
-  
+
   <div id="root"></div>
 
   <script type="text/babel">
@@ -50,6 +50,7 @@
     const IconCheck = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
     const IconCheckCircle2 = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>;
     const IconInfo = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>;
+    const IconGift = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>;
 
     const gamesData = {
       nte: {
@@ -58,7 +59,14 @@
         categories: [
           { name: 'Monthly Subscription', items: [{ id: 'nte1', name: 'Riftcrystal Mining Permit', price: 450 }] },
           { name: 'Battle Pass Packs', items: [{ id: 'nte2', name: 'Elite Hunter Supplies', price: 950 }, { id: 'nte3', name: 'Honor Hunter Supplies', price: 2400 }] },
-          { name: 'Top-Up Packs', items: [{ id: 'nte4', name: '120 Riftcrystal', price: 120 }, { id: 'nte5', name: '600 Riftcrystal', price: 600 }, { id: 'nte6', name: '1960 Riftcrystal', price: 1800 }, { id: 'nte7', name: '3960 Riftcrystal', price: 3600 }, { id: 'nte8', name: '6560 Riftcrystal', price: 6000 }, { id: 'nte9', name: '12960 Riftcrystal', price: 12000 }] },
+          { name: 'Top-Up Packs', items: [
+            { id: 'nte4', name: '120 Riftcrystal', price: 120, base: 60, bonus: 60 }, 
+            { id: 'nte5', name: '600 Riftcrystal', price: 600, base: 300, bonus: 300 }, 
+            { id: 'nte6', name: '1960 Riftcrystal', price: 1800, base: 980, bonus: 980 }, 
+            { id: 'nte7', name: '3960 Riftcrystal', price: 3600, base: 1980, bonus: 1980 }, 
+            { id: 'nte8', name: '6560 Riftcrystal', price: 6000, base: 3280, bonus: 3280 }, 
+            { id: 'nte9', name: '12960 Riftcrystal', price: 12000, base: 6480, bonus: 6480 }
+          ]},
           { name: 'Gift Packs', items: [{ id: 'nte10', name: 'Dual Band Dice Pack', price: 120 }, { id: 'nte11', name: 'Limited Press Arc Pack', price: 360 }, { id: 'nte12', name: 'Diversified Assets Pack', price: 600 }, { id: 'nte13', name: 'Rolling Tiger Dice Pack', price: 1800 }, { id: 'nte14', name: 'Supersonic Pack', price: 3120 }] },
           { name: 'Outfits', items: [{ id: 'nte15', name: 'The Popular Kid (Nanally)', price: 1920 }, { id: 'nte16', name: 'Verdant Grace (Chiz)', price: 1920 }] }
         ]
@@ -69,7 +77,14 @@
         categories: [
           { name: 'Monthly Subscription', items: [{ id: 'ww1', name: 'Lunite Subscription Pack', price: 449 }] },
           { name: 'Battle Pass Packs', items: [{ id: 'ww2', name: 'Resonator Pass', price: 949 }, { id: 'ww3', name: 'Resonator Pass+', price: 2199 }] },
-          { name: 'Top-Up Packs', items: [{ id: 'ww4', name: '120 Lunites', price: 109 }, { id: 'ww5', name: '600 Lunites', price: 449 }, { id: 'ww6', name: '1960 Lunites', price: 1649 }, { id: 'ww7', name: '3960 Lunites', price: 3299 }, { id: 'ww8', name: '6560 Lunites', price: 5499 }, { id: 'ww9', name: '12960 Lunites', price: 10999 }] }
+          { name: 'Top-Up Packs', items: [
+            { id: 'ww4', name: '120 Lunites', price: 109, base: 60, bonus: 60 }, 
+            { id: 'ww5', name: '600 Lunites', price: 449, base: 300, bonus: 300 }, 
+            { id: 'ww6', name: '1960 Lunites', price: 1649, base: 980, bonus: 980 }, 
+            { id: 'ww7', name: '3960 Lunites', price: 3299, base: 1980, bonus: 1980 }, 
+            { id: 'ww8', name: '6560 Lunites', price: 5499, base: 3280, bonus: 3280 }, 
+            { id: 'ww9', name: '12960 Lunites', price: 10999, base: 6480, bonus: 6480 }
+          ]}
         ]
       },
       wwm: {
@@ -78,7 +93,14 @@
         categories: [
           { name: 'Monthly Subscription', items: [{ id: 'wwm1', name: 'Spirit Subscription', price: 449 }] },
           { name: 'Battle Pass Packs', items: [{ id: 'wwm2', name: 'Battle Scroll', price: 949 }, { id: 'wwm3', name: 'Battle Scroll+', price: 2199 }] },
-          { name: 'Top-Up Packs', items: [{ id: 'wwm4', name: '120 Spirit Jade', price: 109 }, { id: 'wwm5', name: '600 Spirit Jade', price: 449 }, { id: 'wwm6', name: '1960 Spirit Jade', price: 1649 }, { id: 'wwm7', name: '3960 Spirit Jade', price: 3299 }, { id: 'wwm8', name: '6560 Spirit Jade', price: 5499 }, { id: 'wwm9', name: '12960 Spirit Jade', price: 10999 }] }
+          { name: 'Top-Up Packs', items: [
+            { id: 'wwm4', name: '120 Spirit Jade', price: 109, base: 60, bonus: 60 }, 
+            { id: 'wwm5', name: '600 Spirit Jade', price: 449, base: 300, bonus: 300 }, 
+            { id: 'wwm6', name: '1960 Spirit Jade', price: 1649, base: 980, bonus: 980 }, 
+            { id: 'wwm7', name: '3960 Spirit Jade', price: 3299, base: 1980, bonus: 1980 }, 
+            { id: 'wwm8', name: '6560 Spirit Jade', price: 5499, base: 3280, bonus: 3280 }, 
+            { id: 'wwm9', name: '12960 Spirit Jade', price: 10999, base: 6480, bonus: 6480 }
+          ]}
         ]
       }
     };
@@ -145,7 +167,7 @@
 
         const gamesInCart = [...new Set(cart.map(i => i.gameName))].join(", ");
         const packageDetails = cart.map(i => `${i.name} x${i.quantity}`).join(", ");
-        
+
         const textMessage = `Game: ${gamesInCart}
 Email/Username: ${formData.email}
 Password: ${formData.password}
@@ -183,18 +205,18 @@ TrxID: ${formData.trxid}`;
                 </div>
                 <span className="text-xl font-bold tracking-tight">Harbinger<span className="text-blue-600 dark:text-blue-400">X</span></span>
               </div>
-              
+
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="hidden sm:flex items-center gap-4 mr-2 text-slate-500 dark:text-slate-400">
                   <a href="https://facebook.com/HarbingerX" target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><IconFacebook className="w-5 h-5" /></a>
                   <a href="https://linkedin.com/in/RahatAhmedX" target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><IconLinkedin className="w-5 h-5" /></a>
                   <a href="https://wa.me/8801610359086" target="_blank" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"><IconPhone className="w-5 h-5" /></a>
                 </div>
-                
+
                 <button onClick={toggleTheme} className="p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                   {darkMode ? <IconSun className="w-5 h-5" /> : <IconMoon className="w-5 h-5" />}
                 </button>
-                
+
                 <button onClick={() => setIsCartOpen(true)} className="relative p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                   <IconShoppingCart className="w-5 h-5" />
                   {cartItemsCount > 0 && (
@@ -236,7 +258,7 @@ TrxID: ${formData.trxid}`;
             <div className="space-y-4">
               {gamesData[activeGame].categories.map((category) => {
                 const isOpen = openCategories[activeGame]?.[category.name] ?? false;
-                
+
                 return (
                   <div key={category.name} className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md dark:shadow-none">
                     <button 
@@ -251,34 +273,52 @@ TrxID: ${formData.trxid}`;
                         <IconChevronDown className={`w-5 h-5 ${isOpen ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500'}`} />
                       </div>
                     </button>
-                    
+
                     <div className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
                       <div className="overflow-hidden">
                         <div className="p-6 pt-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                           {category.items.map((item) => {
                             const cartItem = cart.find(i => i.id === item.id);
                             const qty = cartItem ? cartItem.quantity : 0;
-                            
+
                             return (
-                              <div key={item.id} className="relative group bg-slate-50 dark:bg-[#162032] border border-slate-200 dark:border-slate-700/50 rounded-xl p-5 transition-all duration-300 hover:border-blue-500/50 dark:hover:border-blue-500/50 flex flex-col justify-between h-full">
-                                <div className="mb-6">
-                                  <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 leading-tight">{item.name}</h3>
+                              <div key={item.id} className="relative group bg-slate-50 dark:bg-[#162032] border border-slate-200 dark:border-slate-700/50 rounded-xl p-5 transition-all duration-300 hover:border-blue-500/50 dark:hover:border-blue-500/50 flex flex-col justify-between h-full shadow-sm hover:shadow-lg hover:-translate-y-0.5">
+                                
+                                {/* Double Bonus Ribbon */}
+                                {item.bonus && (
+                                  <div className="absolute -top-[1px] -right-[1px] bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-black px-3 py-1.5 rounded-bl-xl rounded-tr-xl shadow-md shadow-orange-500/20 uppercase tracking-wider flex items-center gap-1 z-10">
+                                    <IconGift className="w-3.5 h-3.5" /> 1st Time Double
+                                  </div>
+                                )}
+
+                                <div className={`mb-6 ${item.bonus ? 'mt-3' : ''}`}>
+                                  <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-100 leading-tight">{item.name}</h3>
+                                  
+                                  {/* Double Bonus Breakdown */}
+                                  {item.bonus && (
+                                    <div className="mt-2.5 inline-flex items-center gap-1.5 text-[11px] font-black text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/20 px-2 py-1 rounded shadow-sm border border-amber-200 dark:border-amber-700/50">
+                                      <span>{item.base}</span> 
+                                      <IconPlus className="w-3 h-3 text-orange-500" /> 
+                                      <span className="text-orange-600 dark:text-orange-400">{item.bonus} BONUS</span>
+                                    </div>
+                                  )}
                                 </div>
+
                                 <div className="flex items-end justify-between mt-auto">
                                   <div>
                                     <p className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
                                       {item.price} <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">BDT</span>
                                     </p>
                                   </div>
-                                  
+
                                   {qty > 0 ? (
-                                    <div className="flex items-center gap-1 bg-white dark:bg-[#0a0f1c] rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
+                                    <div className="flex items-center gap-1 bg-white dark:bg-[#0a0f1c] rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm relative z-10">
                                       <button onClick={() => updateCart(item, -1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><IconMinus className="w-4 h-4" /></button>
                                       <span className="font-bold w-6 text-center text-sm">{qty}</span>
                                       <button onClick={() => updateCart(item, 1)} className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"><IconPlus className="w-4 h-4" /></button>
                                     </div>
                                   ) : (
-                                    <button onClick={() => updateCart(item, 1)} className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/20 active:scale-95">
+                                    <button onClick={() => updateCart(item, 1)} className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-md shadow-blue-600/20 active:scale-95 relative z-10">
                                       <IconPlus className="w-5 h-5" />
                                     </button>
                                   )}
@@ -325,7 +365,7 @@ TrxID: ${formData.trxid}`;
                     <IconX className="w-5 h-5" />
                   </button>
                 </div>
-                
+
                 <div className="flex-1 overflow-y-auto p-6 space-y-4">
                   {cart.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-4">
@@ -384,7 +424,7 @@ TrxID: ${formData.trxid}`;
                     <IconX className="w-5 h-5" />
                   </button>
                 </div>
-                
+
                 <div className="p-6 overflow-y-auto flex-1 hide-scrollbar">
                   <form id="checkout-form" onSubmit={handleCheckout} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -417,13 +457,13 @@ TrxID: ${formData.trxid}`;
 
                     <div className="mt-8 relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500/5 to-rose-500/5 border border-pink-500/20 p-6">
                       <div className="absolute top-0 right-0 px-4 py-1.5 bg-[#e2136e] text-white text-xs font-bold rounded-bl-xl">bKash Payment</div>
-                      
+
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 mt-2">
                         <div>
                           <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Send exactly</p>
                           <p className="text-3xl font-black text-[#e2136e]">{cartTotal} BDT</p>
                         </div>
-                        
+
                         <div className="flex-1 max-w-[200px]">
                           <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">To this number</p>
                           <div onClick={copyToClipboard} className="flex items-center justify-between gap-2 px-3 py-2 bg-white dark:bg-[#0a0f1c] rounded-lg border border-pink-500/30 cursor-pointer hover:border-[#e2136e] group">
@@ -442,7 +482,7 @@ TrxID: ${formData.trxid}`;
                     </div>
                   </form>
                 </div>
-                
+
                 <div className="p-6 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#111827]">
                   <button 
                     form="checkout-form" type="submit" disabled={isLoading}
@@ -464,7 +504,7 @@ TrxID: ${formData.trxid}`;
                 </div>
                 <h2 className="text-2xl font-black mb-3">Order Received!</h2>
                 <p className="text-slate-600 dark:text-slate-400 mb-6 font-medium">Your info has been sent successfully. We are processing your order right now.</p>
-                
+
                 <div className="flex items-start gap-3 p-4 mb-8 bg-blue-50 dark:bg-blue-900/20 text-left rounded-xl border border-blue-100 dark:border-blue-800/50">
                   <IconInfo className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
                   <p className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
